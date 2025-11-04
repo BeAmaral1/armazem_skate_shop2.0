@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Waves, Wind, Shirt, Package } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import RecentlyViewedCarousel from '../components/RecentlyViewedCarousel';
+import SEO from '../components/SEO';
 import { products, blogPosts } from '../data/products';
 
 const Home = () => {
@@ -9,6 +11,10 @@ const Home = () => {
 
   return (
     <div>
+      <SEO 
+        title="Armazém Skate Shop - Surf e Skate"
+        description="A melhor loja de surf e skate do Brasil. Pranchas, shapes, acessórios e vestuário das melhores marcas. Frete grátis acima de R$299."
+      />
       {/* Hero Section */}
       <section className="relative h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
@@ -16,8 +22,10 @@ const Home = () => {
             src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=1920&q=80"
             alt="Surf Hero"
             className="w-full h-full object-cover"
+            loading="eager"
+            fetchpriority="high"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-ocean-900/70 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-dark-900/70 to-transparent"></div>
         </div>
         <div className="relative container mx-auto px-4 text-white">
           <div className="max-w-2xl animate-slide-in-up">
@@ -31,7 +39,7 @@ const Home = () => {
               <Link to="/produtos" className="btn-primary">
                 Compre Agora
               </Link>
-              <Link to="/sobre" className="btn-outline bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-ocean-600">
+              <Link to="/sobre" className="btn-outline bg-white/10 backdrop-blur-sm border-white text-white hover:bg-white hover:text-dark-600">
                 Conheça Nossa História
               </Link>
             </div>
@@ -63,6 +71,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Recently Viewed Products */}
+      <RecentlyViewedCarousel limit={6} />
 
       {/* Categories */}
       <section className="py-16">
@@ -153,11 +164,11 @@ const Home = () => {
                   <div className="text-sm text-gray-500 mb-2">
                     {new Date(post.date).toLocaleDateString('pt-BR')} • {post.author}
                   </div>
-                  <h3 className="text-lg sm:text-xl font-heading font-bold text-gray-900 mb-2 group-hover:text-ocean-600 transition-colors">
+                  <h3 className="text-lg sm:text-xl font-heading font-bold text-gray-900 mb-2 group-hover:text-dark-600 transition-colors">
                     {post.title}
                   </h3>
                   <p className="text-sm sm:text-base text-gray-600 mb-4">{post.excerpt}</p>
-                  <span className="text-ocean-600 font-semibold inline-flex items-center gap-1">
+                  <span className="text-dark-600 font-semibold inline-flex items-center gap-1">
                     Ler mais <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
@@ -168,27 +179,27 @@ const Home = () => {
       </section>
 
       {/* Newsletter */}
-      <section className="py-16 bg-ocean-600 text-white">
+      <section className="py-16 bg-dark-600 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
               Fique por dentro das novidades
             </h2>
-            <p className="text-lg mb-8 text-ocean-100">
+            <p className="text-lg mb-8 text-gray-100">
               Cadastre-se e receba em primeira mão nossas promoções e lançamentos
             </p>
             <form className="flex flex-col md:flex-row gap-4 max-w-xl mx-auto">
               <input
                 type="email"
                 placeholder="Seu melhor e-mail"
-                className="flex-1 px-6 py-4 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-sunset-500"
+                className="flex-1 px-6 py-4 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500"
                 required
               />
               <button type="submit" className="btn-secondary whitespace-nowrap">
                 Inscrever-se
               </button>
             </form>
-            <p className="text-sm text-ocean-200 mt-4">
+            <p className="text-sm text-gray-200 mt-4">
               Não enviamos spam. Você pode cancelar a qualquer momento.
             </p>
           </div>

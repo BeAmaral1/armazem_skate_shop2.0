@@ -24,8 +24,8 @@ const Contact = () => {
           <div className="lg:col-span-1 space-y-4 sm:space-y-6">
             <div className="bg-white rounded-xl p-4 sm:p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-ocean-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="w-6 h-6 text-ocean-600" />
+                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <MapPin className="w-6 h-6 text-dark-600" />
                 </div>
                 <div>
                   <h3 className="text-base sm:text-lg font-heading font-bold text-gray-900 mb-2">Endereço</h3>
@@ -40,8 +40,8 @@ const Contact = () => {
 
             <div className="bg-white rounded-xl p-4 sm:p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-ocean-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Phone className="w-6 h-6 text-ocean-600" />
+                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Phone className="w-6 h-6 text-dark-600" />
                 </div>
                 <div>
                   <h3 className="font-heading font-bold text-gray-900 mb-2">Telefone</h3>
@@ -55,8 +55,8 @@ const Contact = () => {
 
             <div className="bg-white rounded-xl p-4 sm:p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-ocean-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Mail className="w-6 h-6 text-ocean-600" />
+                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Mail className="w-6 h-6 text-dark-600" />
                 </div>
                 <div>
                   <h3 className="font-heading font-bold text-gray-900 mb-2">E-mail</h3>
@@ -70,8 +70,8 @@ const Contact = () => {
 
             <div className="bg-white rounded-xl p-4 sm:p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-ocean-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Clock className="w-6 h-6 text-ocean-600" />
+                <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-6 h-6 text-dark-600" />
                 </div>
                 <div>
                   <h3 className="font-heading font-bold text-gray-900 mb-2">Horário</h3>

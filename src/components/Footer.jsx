@@ -8,23 +8,23 @@ const Footer = () => {
   return (
     <footer className="bg-gray-900 text-gray-300">
       {/* Top Benefits Bar */}
-      <div className="bg-ocean-800 py-4">
+      <div className="bg-dark-950 py-4">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-              <Truck className="w-5 h-5 text-ocean-200 flex-shrink-0" />
+              <Truck className="w-5 h-5 text-gray-300 flex-shrink-0" />
               <span className="text-xs sm:text-sm text-white">Frete Grátis acima de R$299</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-              <Shield className="w-5 h-5 text-ocean-200 flex-shrink-0" />
+              <Shield className="w-5 h-5 text-gray-300 flex-shrink-0" />
               <span className="text-xs sm:text-sm text-white">Compra 100% Segura</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-              <CreditCard className="w-5 h-5 text-ocean-200 flex-shrink-0" />
+              <CreditCard className="w-5 h-5 text-gray-300 flex-shrink-0" />
               <span className="text-xs sm:text-sm text-white">Parcele em até 10x</span>
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-2">
-              <Award className="w-5 h-5 text-ocean-200 flex-shrink-0" />
+              <Award className="w-5 h-5 text-gray-300 flex-shrink-0" />
               <span className="text-xs sm:text-sm text-white">Produtos Originais</span>
             </div>
           </div>
@@ -35,33 +35,40 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* About */}
           <div>
-            <div className="flex items-center space-x-2 mb-4">
-              <Waves className="w-6 h-6 sm:w-8 sm:h-8 text-ocean-400 flex-shrink-0" />
-              <h3 className="text-lg sm:text-xl font-heading font-bold text-white">Armazem Skate Shop</h3>
+            <div className="flex items-center space-x-3 mb-4">
+              <img 
+                src="/logo_armazem.png" 
+                alt="Armazem Skate Shop" 
+                className="w-12 h-12 sm:w-14 sm:h-14 object-contain flex-shrink-0"
+              />
+              <div>
+                <h3 className="text-lg sm:text-xl font-logo font-bold text-white uppercase tracking-tight">Armazem</h3>
+                <p className="text-xs font-bold text-gray-400">SKATE SHOP</p>
+              </div>
             </div>
             <p className="text-sm mb-4 leading-relaxed">
               Onde o asfalto encontra a onda. Sua loja completa de surf e skate desde 2010.
             </p>
             <div className="space-y-3 mb-4">
               <div className="flex items-center gap-2">
-                <TrendingUp className="w-4 h-4 text-sunset-400" />
+                <TrendingUp className="w-4 h-4 text-gray-400" />
                 <span className="text-xs">Riders desde 2010</span>
               </div>
               <div className="flex items-center gap-2">
-                <Zap className="w-4 h-4 text-sunset-400" />
+                <Zap className="w-4 h-4 text-gray-400" />
                 <span className="text-xs">Equipamentos Pro Level</span>
               </div>
             </div>
             <div>
               <p className="text-xs text-gray-400 mb-2">Siga-nos nas redes</p>
               <div className="flex space-x-3">
-                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-ocean-600 transition-colors" aria-label="Facebook">
+                <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-dark-700 transition-colors" aria-label="Facebook">
                   <Facebook className="w-4 h-4" />
                 </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-ocean-600 transition-colors" aria-label="Instagram">
+                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-dark-700 transition-colors" aria-label="Instagram">
                   <Instagram className="w-4 h-4" />
                 </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-ocean-600 transition-colors" aria-label="YouTube">
+                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-gray-800 rounded-full flex items-center justify-center hover:bg-dark-700 transition-colors" aria-label="YouTube">
                   <Youtube className="w-4 h-4" />
                 </a>
               </div>
@@ -72,11 +79,12 @@ const Footer = () => {
           <div>
             <h4 className="text-base sm:text-lg font-heading font-semibold text-white mb-3 sm:mb-4">Links Rápidos</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/" className="hover:text-ocean-400 transition-colors inline-flex items-center gap-2"><span className="text-ocean-400">›</span> Início</Link></li>
-              <li><Link to="/produtos" className="hover:text-ocean-400 transition-colors inline-flex items-center gap-2"><span className="text-ocean-400">›</span> Produtos</Link></li>
-              <li><Link to="/sobre" className="hover:text-ocean-400 transition-colors inline-flex items-center gap-2"><span className="text-ocean-400">›</span> Sobre Nós</Link></li>
-              <li><Link to="/contato" className="hover:text-ocean-400 transition-colors inline-flex items-center gap-2"><span className="text-ocean-400">›</span> Contato</Link></li>
-              <li><Link to="/login" className="hover:text-ocean-400 transition-colors inline-flex items-center gap-2"><span className="text-ocean-400">›</span> Minha Conta</Link></li>
+              <li><Link to="/" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Início</Link></li>
+              <li><Link to="/produtos" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Produtos</Link></li>
+              <li><Link to="/sobre" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Sobre Nós</Link></li>
+              <li><Link to="/contato" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Contato</Link></li>
+              <li><Link to="/faq" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Perguntas Frequentes</Link></li>
+              <li><Link to="/login" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Minha Conta</Link></li>
             </ul>
           </div>
 
@@ -84,10 +92,10 @@ const Footer = () => {
           <div>
             <h4 className="text-base sm:text-lg font-heading font-semibold text-white mb-3 sm:mb-4">Categorias</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link to="/produtos?categoria=Surf" className="hover:text-ocean-400 transition-colors inline-flex items-center gap-2"><Waves className="w-4 h-4 text-ocean-400" /> Surf</Link></li>
-              <li><Link to="/produtos?categoria=Skate" className="hover:text-ocean-400 transition-colors inline-flex items-center gap-2"><Zap className="w-4 h-4 text-sunset-400" /> Skate</Link></li>
-              <li><Link to="/produtos?categoria=Vestuário" className="hover:text-ocean-400 transition-colors inline-flex items-center gap-2"><span className="text-ocean-400">›</span> Vestuário</Link></li>
-              <li><Link to="/produtos?categoria=Acessórios" className="hover:text-ocean-400 transition-colors inline-flex items-center gap-2"><span className="text-ocean-400">›</span> Acessórios</Link></li>
+              <li><Link to="/produtos?categoria=Surf" className="hover:text-white transition-colors inline-flex items-center gap-2"><Waves className="w-4 h-4 text-gray-400" /> Surf</Link></li>
+              <li><Link to="/produtos?categoria=Skate" className="hover:text-white transition-colors inline-flex items-center gap-2"><Zap className="w-4 h-4 text-gray-400" /> Skate</Link></li>
+              <li><Link to="/produtos?categoria=Vestuário" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Vestuário</Link></li>
+              <li><Link to="/produtos?categoria=Acessórios" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Acessórios</Link></li>
             </ul>
           </div>
 
@@ -96,16 +104,16 @@ const Footer = () => {
             <h4 className="text-base sm:text-lg font-heading font-semibold text-white mb-3 sm:mb-4">Atendimento</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start space-x-2">
-                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-ocean-400 mt-0.5 flex-shrink-0" />
+                <MapPin className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 mt-0.5 flex-shrink-0" />
                 <span className="text-xs sm:text-sm">Av. Atlântica, 1500<br />Copacabana, Rio de Janeiro - RJ</span>
               </li>
               <li className="flex items-center space-x-2">
-                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-ocean-400 flex-shrink-0" />
+                <Phone className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" />
                 <span className="text-xs sm:text-sm">(21) 3456-7890</span>
               </li>
               <li className="flex items-center space-x-2">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-ocean-400 flex-shrink-0" />
-                <a href="mailto:contato@armazemskate.com.br" className="text-xs sm:text-sm hover:text-ocean-400 transition-colors">contato@armazemskate.com.br</a>
+                <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-gray-400 flex-shrink-0" />
+                <a href="mailto:contato@armazemskate.com.br" className="text-xs sm:text-sm hover:text-white transition-colors">contato@armazemskate.com.br</a>
               </li>
             </ul>
             <div className="mt-4 p-3 bg-gray-800 rounded-lg">
@@ -119,16 +127,16 @@ const Footer = () => {
         {/* Newsletter */}
         <div className="mt-8 sm:mt-12 pt-8 border-t border-gray-800">
           <div className="max-w-2xl mx-auto">
-            <div className="bg-gradient-to-r from-ocean-800 to-ocean-900 rounded-2xl p-6 sm:p-8 text-center">
+            <div className="bg-gradient-to-r from-dark-800 to-dark-950 rounded-2xl p-6 sm:p-8 text-center">
               <div className="flex justify-center mb-4">
-                <div className="bg-ocean-600 rounded-full p-3">
+                <div className="bg-dark-700 rounded-full p-3">
                   <Mail className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
                 </div>
               </div>
               <h4 className="text-xl sm:text-2xl font-heading font-bold text-white mb-2">
                 Receba nossas novidades
               </h4>
-              <p className="text-sm sm:text-base text-ocean-100 mb-6 max-w-md mx-auto">
+              <p className="text-sm sm:text-base text-gray-300 mb-6 max-w-md mx-auto">
                 Cadastre-se e fique por dentro de promoções exclusivas, lançamentos e dicas de surf e skate
               </p>
               <form className="flex flex-col sm:flex-row gap-3 max-w-lg mx-auto">
@@ -136,14 +144,14 @@ const Footer = () => {
                   type="email"
                   placeholder="Digite seu melhor e-mail"
                   required
-                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 bg-white/10 backdrop-blur-sm border border-ocean-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-ocean-400 text-white placeholder-ocean-200 text-sm sm:text-base"
+                  className="flex-1 px-4 sm:px-6 py-3 sm:py-4 bg-white/10 backdrop-blur-sm border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-400 text-white placeholder-gray-300 text-sm sm:text-base"
                 />
-                <button type="submit" className="bg-sunset-600 hover:bg-sunset-700 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors whitespace-nowrap text-sm sm:text-base">
+                <button type="submit" className="bg-dark-700 hover:bg-dark-900 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-colors whitespace-nowrap text-sm sm:text-base">
                   Inscrever-se
                 </button>
               </form>
-              <p className="text-xs text-ocean-200 mt-4">
-                🌊 Ganhe 10% OFF na primeira compra!
+              <p className="text-xs text-gray-300 mt-4">
+                ⚡ Ganhe 10% OFF na primeira compra!
               </p>
             </div>
           </div>
@@ -167,20 +175,20 @@ const Footer = () => {
         <div className="mt-8 pt-6 border-t border-gray-800 text-center">
           <p className="text-sm text-gray-400 mb-3">&copy; {currentYear} Armazem Skate Shop. Todos os direitos reservados.</p>
           <div className="flex flex-wrap justify-center gap-2 sm:gap-4 text-xs sm:text-sm mb-4">
-            <a href="#" className="hover:text-ocean-400 transition-colors">Política de Privacidade</a>
+            <a href="#" className="hover:text-gray-400 transition-colors">Política de Privacidade</a>
             <span className="text-gray-600">•</span>
-            <a href="#" className="hover:text-ocean-400 transition-colors">Termos de Uso</a>
+            <a href="#" className="hover:text-gray-400 transition-colors">Termos de Uso</a>
             <span className="text-gray-600">•</span>
-            <a href="#" className="hover:text-ocean-400 transition-colors">Trocas e Devoluções</a>
+            <a href="#" className="hover:text-gray-400 transition-colors">Trocas e Devoluções</a>
             <span className="text-gray-600">•</span>
-            <a href="#" className="hover:text-ocean-400 transition-colors">Rastreio de Pedidos</a>
+            <a href="#" className="hover:text-gray-400 transition-colors">Rastreio de Pedidos</a>
           </div>
           <div className="flex justify-center items-center gap-2 text-xs text-gray-500">
-            <Waves className="w-4 h-4 text-ocean-600" />
+            <Waves className="w-4 h-4 text-dark-600" />
             <span>Desenvolvido com</span>
-            <span className="text-sunset-500">❤️</span>
+            <span className="text-gray-500">❤️</span>
             <span>para riders</span>
-            <Zap className="w-4 h-4 text-sunset-600" />
+            <Zap className="w-4 h-4 text-dark-600" />
           </div>
         </div>
       </div>

@@ -1,13 +1,42 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ShoppingCart, Search, User, Menu, X, Waves } from 'lucide-react';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { ShoppingCart, Search, User, Menu, X, Waves, Heart, LogOut, ChevronDown, Package } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
+import NotificationBell from './NotificationBell';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const { getCartCount } = useCart();
+  const { getWishlistCount } = useWishlist();
+  const { user, logout, isAuthenticated } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const cartCount = getCartCount();
+  const wishlistCount = getWishlistCount();
+  const userMenuRef = useRef(null);
+
+  // Fechar menu ao clicar fora
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    logout();
+    setIsUserMenuOpen(false);
+    navigate('/');
+  };
 
   const isActive = (path) => location.pathname === path;
 
@@ -18,10 +47,19 @@ const Header = () => {
     { name: 'Contato', path: '/contato' }
   ];
 
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchTerm.trim()) {
+      navigate(`/produtos?busca=${encodeURIComponent(searchTerm)}`);
+      setSearchTerm('');
+      setIsSearchOpen(false);
+    }
+  };
+
   return (
     <header className="bg-white shadow-md sticky top-0 z-50">
       {/* Top bar */}
-      <div className="bg-ocean-700 text-white py-2 px-4 text-xs sm:text-sm text-center">
+      <div className="bg-dark-950 text-white py-2 px-4 text-xs sm:text-sm text-center">
         <p className="hidden sm:block">Frete grátis para compras acima de R$ 299 | Parcele em até 10x sem juros</p>
         <p className="sm:hidden">Frete grátis acima de R$ 299</p>
       </div>
@@ -30,11 +68,15 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 group">
-            <Waves className="w-6 h-6 sm:w-8 sm:h-8 text-ocean-600 group-hover:text-sunset-600 transition-colors flex-shrink-0" />
+          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
+            <img 
+              src="/logo_armazem.png" 
+              alt="Armazem Skate Shop" 
+              className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain flex-shrink-0 group-hover:scale-105 transition-transform"
+            />
             <div className="min-w-0">
-              <h1 className="text-lg sm:text-xl md:text-2xl font-heading font-bold text-gray-900 truncate">Armazem Skate Shop</h1>
-              <p className="text-xs text-gray-600 hidden sm:block">Onde o asfalto encontra a onda</p>
+              <h1 className="text-base sm:text-lg md:text-xl font-logo font-bold text-dark-900 truncate uppercase tracking-tight">Armazem</h1>
+              <p className="text-xs text-dark-600 hidden sm:block font-bold">SKATE SHOP</p>
             </div>
           </Link>
 
@@ -46,8 +88,8 @@ const Header = () => {
                 to={link.path}
                 className={`font-medium transition-colors ${
                   isActive(link.path)
-                    ? 'text-ocean-600 border-b-2 border-ocean-600'
-                    : 'text-gray-700 hover:text-ocean-600'
+                    ? 'text-dark-900 border-b-2 border-dark-900'
+                    : 'text-gray-700 hover:text-dark-900'
                 }`}
               >
                 {link.name}
@@ -58,20 +100,118 @@ const Header = () => {
           {/* Right Icons */}
           <div className="flex items-center space-x-2 sm:space-x-4">
             {/* Search */}
-            <button className="hidden sm:flex p-2 hover:bg-gray-100 rounded-full transition-colors" title="Buscar">
-              <Search className="w-5 h-5 text-gray-700" />
-            </button>
+            <div className="relative hidden sm:block">
+              {isSearchOpen ? (
+                <form onSubmit={handleSearch} className="flex items-center">
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Buscar produtos..."
+                    className="w-48 lg:w-64 px-4 py-2 pr-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-dark-600 text-sm"
+                    autoFocus
+                  />
+                  <button
+                    type="submit"
+                    className="absolute right-2 p-1 hover:bg-gray-100 rounded-full transition-colors"
+                  >
+                    <Search className="w-5 h-5 text-dark-900" />
+                  </button>
+                </form>
+              ) : (
+                <button
+                  onClick={() => setIsSearchOpen(true)}
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  title="Buscar"
+                >
+                  <Search className="w-5 h-5 text-gray-700" />
+                </button>
+              )}
+            </div>
 
-            {/* User */}
-            <Link to="/login" className="p-2 hover:bg-gray-100 rounded-full transition-colors" title="Minha Conta">
-              <User className="w-5 h-5 text-gray-700" />
+            {/* Wishlist */}
+            <Link to="/favoritos" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors" title="Favoritos">
+              <Heart className="w-5 h-5 text-gray-700" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-dark-900 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
             </Link>
+
+            {/* Notifications */}
+            {isAuthenticated() && <NotificationBell />}
+
+            {/* User Menu */}
+            {isAuthenticated() ? (
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                >
+                  <div className="w-8 h-8 bg-dark-900 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">
+                      {user?.name?.charAt(0).toUpperCase()}
+                    </span>
+                  </div>
+                  <span className="hidden md:block text-sm font-medium text-gray-700">
+                    {user?.name?.split(' ')[0]}
+                  </span>
+                  <ChevronDown className="hidden md:block w-4 h-4 text-gray-500" />
+                </button>
+
+                {/* Dropdown Menu */}
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    <div className="px-4 py-3 border-b border-gray-200">
+                      <p className="text-sm font-semibold text-gray-900">{user?.name}</p>
+                      <p className="text-xs text-gray-500 truncate">{user?.email}</p>
+                    </div>
+                    <Link
+                      to="/perfil"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      <User className="w-4 h-4" />
+                      Minha Conta
+                    </Link>
+                    <Link
+                      to="/pedidos"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      <Package className="w-4 h-4" />
+                      Meus Pedidos
+                    </Link>
+                    <Link
+                      to="/favoritos"
+                      onClick={() => setIsUserMenuOpen(false)}
+                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      <Heart className="w-4 h-4" />
+                      Meus Favoritos
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sair
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <Link to="/login" className="p-2 hover:bg-gray-100 rounded-full transition-colors" title="Entrar">
+                <User className="w-5 h-5 text-gray-700" />
+              </Link>
+            )}
 
             {/* Cart */}
             <Link to="/carrinho" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors" title="Carrinho">
               <ShoppingCart className="w-5 h-5 text-gray-700" />
               {cartCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-sunset-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-dark-900 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
@@ -91,6 +231,27 @@ const Header = () => {
           </div>
         </div>
 
+        {/* Mobile Search */}
+        <div className="sm:hidden mt-4">
+          <form onSubmit={handleSearch} className="flex items-center">
+            <div className="relative flex-1">
+              <input
+                type="text"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                placeholder="Buscar produtos..."
+                className="w-full px-4 py-2 pr-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-dark-600 text-sm"
+              />
+              <button
+                type="submit"
+                className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded-full transition-colors"
+              >
+                <Search className="w-5 h-5 text-dark-900" />
+              </button>
+            </div>
+          </form>
+        </div>
+
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <nav className="md:hidden mt-4 pb-4 border-t pt-4">
@@ -102,7 +263,7 @@ const Header = () => {
                   onClick={() => setIsMenuOpen(false)}
                   className={`font-medium py-2 px-4 rounded transition-colors ${
                     isActive(link.path)
-                      ? 'bg-ocean-50 text-ocean-600'
+                      ? 'bg-gray-100 text-dark-900'
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
                 >

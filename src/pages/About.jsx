@@ -12,7 +12,7 @@ const About = () => {
             alt="About Hero"
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-ocean-900/70"></div>
+          <div className="absolute inset-0 bg-dark-900/70"></div>
         </div>
         <div className="relative container mx-auto px-4 text-white text-center">
           <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold mb-4">Nossa História</h1>
@@ -27,7 +27,7 @@ const About = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8 sm:mb-12">
-              <Waves className="w-12 h-12 sm:w-16 sm:h-16 text-ocean-600 mx-auto mb-4" />
+              <Waves className="w-12 h-12 sm:w-16 sm:h-16 text-dark-600 mx-auto mb-4" />
               <h2 className="text-2xl sm:text-3xl font-heading font-bold text-gray-900 mb-4 sm:mb-6">
                 Onde o Asfalto Encontra a Onda
               </h2>
@@ -73,7 +73,7 @@ const About = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
             <div className="bg-white rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <Target className="w-12 h-12 text-ocean-600 mx-auto mb-4" />
+              <Target className="w-12 h-12 text-dark-600 mx-auto mb-4" />
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
                 Autenticidade
               </h3>
@@ -83,7 +83,7 @@ const About = () => {
             </div>
 
             <div className="bg-white rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <Award className="w-12 h-12 text-sunset-600 mx-auto mb-4" />
+              <Award className="w-12 h-12 text-dark-600 mx-auto mb-4" />
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
                 Excelência
               </h3>
@@ -93,7 +93,7 @@ const About = () => {
             </div>
 
             <div className="bg-white rounded-xl p-8 text-center hover:shadow-lg transition-shadow">
-              <Users className="w-12 h-12 text-ocean-600 mx-auto mb-4" />
+              <Users className="w-12 h-12 text-dark-600 mx-auto mb-4" />
               <h3 className="text-xl font-heading font-bold text-gray-900 mb-3">
                 Comunidade
               </h3>
@@ -157,12 +157,12 @@ const About = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-ocean-600 text-white">
+      <section className="py-16 bg-dark-600 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl font-heading font-bold mb-4">
             Faça Parte da Nossa História
           </h2>
-          <p className="text-xl text-ocean-100 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-100 mb-8 max-w-2xl mx-auto">
             Venha fazer parte da comunidade Armazem e descubra os melhores produtos para sua paixão
           </p>
           <a href="/produtos" className="btn-secondary inline-block">

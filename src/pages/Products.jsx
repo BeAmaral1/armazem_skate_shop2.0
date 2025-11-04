@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { Filter, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Filter, X, ChevronLeft, ChevronRight, SlidersHorizontal, ArrowUpDown } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
+import FilterSidebar from '../components/FilterSidebar';
+import SEO from '../components/SEO';
 import { products, categories, brands } from '../data/products';
 
 const Products = () => {
@@ -12,47 +14,74 @@ const Products = () => {
   const productsPerPage = 12;
   
   const [filters, setFilters] = useState({
-    category: searchParams.get('categoria') || 'Todos',
-    brand: 'Todos',
-    priceRange: 'Todos',
-    sortBy: 'featured'
+    price: { min: 0, max: 2000 },
+    categories: [],
+    brands: [],
+    rating: null,
+    onSale: false,
+    freeShipping: false,
   });
+  
+  const [sortBy, setSortBy] = useState('featured');
+
+  // Handle initial category from URL
+  useEffect(() => {
+    const categoria = searchParams.get('categoria');
+    if (categoria) {
+      setFilters(prev => ({
+        ...prev,
+        categories: [categoria]
+      }));
+    }
+  }, []);
 
   useEffect(() => {
     let result = [...products];
 
-    // Filter by category
-    if (filters.category !== 'Todos') {
-      result = result.filter(p => p.category === filters.category);
-    }
-
-    // Filter by brand
-    if (filters.brand !== 'Todos') {
-      result = result.filter(p => p.brand === filters.brand);
+    // Filter by search term
+    const searchTerm = searchParams.get('busca');
+    if (searchTerm) {
+      const lowerSearch = searchTerm.toLowerCase();
+      result = result.filter(p => 
+        p.name.toLowerCase().includes(lowerSearch) ||
+        p.description.toLowerCase().includes(lowerSearch) ||
+        p.category.toLowerCase().includes(lowerSearch) ||
+        p.brand.toLowerCase().includes(lowerSearch)
+      );
     }
 
     // Filter by price range
-    if (filters.priceRange !== 'Todos') {
-      switch (filters.priceRange) {
-        case 'Até R$ 100':
-          result = result.filter(p => p.price <= 100);
-          break;
-        case 'R$ 100 - R$ 300':
-          result = result.filter(p => p.price > 100 && p.price <= 300);
-          break;
-        case 'R$ 300 - R$ 500':
-          result = result.filter(p => p.price > 300 && p.price <= 500);
-          break;
-        case 'Acima de R$ 500':
-          result = result.filter(p => p.price > 500);
-          break;
-        default:
-          break;
-      }
+    result = result.filter(p => 
+      p.price >= filters.price.min && p.price <= filters.price.max
+    );
+
+    // Filter by categories
+    if (filters.categories.length > 0) {
+      result = result.filter(p => filters.categories.includes(p.category));
+    }
+
+    // Filter by brands
+    if (filters.brands.length > 0) {
+      result = result.filter(p => filters.brands.includes(p.brand));
+    }
+
+    // Filter by rating
+    if (filters.rating !== null) {
+      result = result.filter(p => p.rating >= filters.rating);
+    }
+
+    // Filter by on sale
+    if (filters.onSale) {
+      result = result.filter(p => p.oldPrice && p.oldPrice > p.price);
+    }
+
+    // Filter by free shipping (acima de R$299)
+    if (filters.freeShipping) {
+      result = result.filter(p => p.price >= 299);
     }
 
     // Sort products
-    switch (filters.sortBy) {
+    switch (sortBy) {
       case 'price-asc':
         result.sort((a, b) => a.price - b.price);
         break;
@@ -62,6 +91,12 @@ const Products = () => {
       case 'name':
         result.sort((a, b) => a.name.localeCompare(b.name));
         break;
+      case 'rating':
+        result.sort((a, b) => b.rating - a.rating);
+        break;
+      case 'newest':
+        result.sort((a, b) => b.id - a.id);
+        break;
       case 'featured':
       default:
         result.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
@@ -70,53 +105,61 @@ const Products = () => {
 
     setFilteredProducts(result);
     setCurrentPage(1); // Reset to first page when filters change
-  }, [filters]);
+  }, [filters, sortBy, searchParams]);
 
-  const updateFilter = (key, value) => {
-    setFilters(prev => ({ ...prev, [key]: value }));
+  const handleFilterChange = (filterType, value) => {
+    setFilters(prev => ({
+      ...prev,
+      [filterType]: value
+    }));
   };
 
-  const clearFilters = () => {
+  const handleClearFilters = () => {
     setFilters({
-      category: 'Todos',
-      brand: 'Todos',
-      priceRange: 'Todos',
-      sortBy: 'featured'
+      price: { min: 0, max: 2000 },
+      categories: [],
+      brands: [],
+      rating: null,
+      onSale: false,
+      freeShipping: false,
     });
+    setSortBy('featured');
     setSearchParams({});
   };
 
-  const FilterSection = ({ title, options, filterKey, currentValue }) => (
-    <div className="mb-6">
-      <h3 className="font-semibold text-gray-900 mb-3">{title}</h3>
-      <div className="space-y-2">
-        {options.map(option => (
-          <label key={option} className="flex items-center cursor-pointer group">
-            <input
-              type="radio"
-              name={filterKey}
-              value={option}
-              checked={currentValue === option}
-              onChange={(e) => updateFilter(filterKey, e.target.value)}
-              className="w-4 h-4 text-ocean-600 focus:ring-ocean-500"
-            />
-            <span className="ml-2 text-gray-700 group-hover:text-ocean-600 transition-colors">
-              {option}
-            </span>
-          </label>
-        ))}
-      </div>
-    </div>
-  );
+  const clearSearch = () => {
+    setSearchParams({});
+  };
+
+  const activeSearch = searchParams.get('busca');
 
   return (
     <div className="bg-gray-50 min-h-screen py-8">
+      <SEO 
+        title="Produtos"
+        description={`Confira nosso catálogo completo de ${filteredProducts.length} produtos de surf e skate. Melhores marcas e preços do Brasil.`}
+      />
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-4xl font-heading font-bold text-gray-900 mb-2">
             Produtos
           </h1>
+          {activeSearch && (
+            <div className="flex items-center gap-2 mb-3">
+              <span className="text-sm text-gray-600">Buscando por:</span>
+              <div className="inline-flex items-center gap-2 bg-gray-100 text-dark-800 px-3 py-1 rounded-full">
+                <span className="font-medium">"{activeSearch}"</span>
+                <button
+                  onClick={clearSearch}
+                  className="hover:bg-gray-200 rounded-full p-0.5 transition-colors"
+                  title="Limpar busca"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          )}
           <p className="text-gray-600">
             {filteredProducts.length} produto{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
           </p>
@@ -124,39 +167,12 @@ const Products = () => {
 
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Filters Sidebar */}
-          <aside className={`lg:w-64 ${showFilters ? 'block' : 'hidden lg:block'}`}>
-            <div className="bg-white rounded-lg p-6 sticky top-24">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-heading font-bold text-gray-900">
-                  Filtros
-                </h2>
-                <button
-                  onClick={clearFilters}
-                  className="text-sm text-ocean-600 hover:text-ocean-700 font-medium"
-                >
-                  Limpar
-                </button>
-              </div>
-
-              <FilterSection
-                title="Categoria"
-                options={categories}
-                filterKey="category"
-                currentValue={filters.category}
-              />
-
-              <FilterSection
-                title="Marca"
-                options={brands}
-                filterKey="brand"
-                currentValue={filters.brand}
-              />
-
-              <FilterSection
-                title="Faixa de Preço"
-                options={['Todos', 'Até R$ 100', 'R$ 100 - R$ 300', 'R$ 300 - R$ 500', 'Acima de R$ 500']}
-                filterKey="priceRange"
-                currentValue={filters.priceRange}
+          <aside className={`lg:w-80 flex-shrink-0 ${showFilters ? 'block' : 'hidden lg:block'}`}>
+            <div className="sticky top-24">
+              <FilterSidebar
+                filters={filters}
+                onFilterChange={handleFilterChange}
+                onClearFilters={handleClearFilters}
               />
             </div>
           </aside>
@@ -164,26 +180,31 @@ const Products = () => {
           {/* Products Grid */}
           <main className="flex-1">
             {/* Top bar */}
-            <div className="flex items-center justify-between mb-6">
+            <div className="bg-white rounded-xl shadow-md p-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
               <button
                 onClick={() => setShowFilters(!showFilters)}
-                className="lg:hidden btn-outline flex items-center gap-2"
+                className="lg:hidden flex items-center gap-2 px-4 py-2 bg-dark-900 text-white rounded-lg hover:bg-dark-950 transition-colors"
               >
-                <Filter className="w-4 h-4" />
+                <SlidersHorizontal className="w-4 h-4" />
                 Filtros
               </button>
 
-              <div className="flex items-center gap-4 ml-auto">
-                <label className="text-gray-700 text-sm">Ordenar por:</label>
+              <div className="flex items-center gap-4 flex-wrap">
+                <div className="flex items-center gap-2">
+                  <ArrowUpDown className="w-4 h-4 text-gray-500" />
+                  <label className="text-gray-700 text-sm font-medium">Ordenar por:</label>
+                </div>
                 <select
-                  value={filters.sortBy}
-                  onChange={(e) => updateFilter('sortBy', e.target.value)}
-                  className="border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-ocean-500"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                  className="border-2 border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-dark-600 focus:border-dark-600 bg-white"
                 >
-                  <option value="featured">Destaque</option>
-                  <option value="name">Nome (A-Z)</option>
+                  <option value="featured">Destaques</option>
+                  <option value="newest">Mais Novos</option>
                   <option value="price-asc">Menor Preço</option>
                   <option value="price-desc">Maior Preço</option>
+                  <option value="name">Nome (A-Z)</option>
+                  <option value="rating">Melhor Avaliados</option>
                 </select>
               </div>
             </div>
@@ -237,7 +258,7 @@ const Products = () => {
                               }}
                               className={`min-w-[40px] h-10 px-4 rounded-lg font-medium transition-colors ${
                                 currentPage === page
-                                  ? 'bg-ocean-600 text-white'
+                                  ? 'bg-dark-600 text-white'
                                   : 'border border-gray-300 hover:bg-gray-50 text-gray-700'
                               }`}
                             >
@@ -266,7 +287,7 @@ const Products = () => {
                 <p className="text-gray-500 text-lg mb-4">
                   Nenhum produto encontrado com os filtros selecionados.
                 </p>
-                <button onClick={clearFilters} className="btn-primary">
+                <button onClick={handleClearFilters} className="btn-primary">
                   Limpar Filtros
                 </button>
               </div>

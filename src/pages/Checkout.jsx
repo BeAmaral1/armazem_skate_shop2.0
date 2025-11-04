@@ -2,16 +2,20 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, CreditCard, Smartphone, Barcode } from 'lucide-react';
 import { useCart } from '../context/CartContext';
+import { useCoupons } from '../context/CouponsContext';
+import CouponInput from '../components/CouponInput';
 
 const Checkout = () => {
   const { cart, getCartTotal, clearCart } = useCart();
+  const { appliedCoupon, calculateDiscount, isFreeShipping, markCouponAsUsed, removeCoupon } = useCoupons();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState('credit');
 
   const subtotal = getCartTotal();
-  const shipping = subtotal >= 299 ? 0 : 25;
-  const total = subtotal + shipping;
+  const discount = calculateDiscount(subtotal);
+  const shipping = isFreeShipping() || subtotal >= 299 ? 0 : 25;
+  const total = subtotal - discount + shipping;
 
   if (cart.length === 0) {
     navigate('/carrinho');
@@ -20,22 +24,27 @@ const Checkout = () => {
 
   const handleFinishPurchase = (e) => {
     e.preventDefault();
+    // Marcar cupom como usado se aplicado
+    if (appliedCoupon) {
+      markCouponAsUsed(appliedCoupon.code);
+    }
     // Simulate successful purchase
     clearCart();
+    removeCoupon();
     navigate('/pedido-confirmado');
   };
 
   const StepIndicator = ({ stepNumber, title, active, completed }) => (
     <div className="flex items-center">
       <div className={`flex items-center justify-center w-8 h-8 sm:w-10 sm:h-10 rounded-full font-bold text-sm sm:text-base ${
-        completed ? 'bg-green-600 text-white' :
-        active ? 'bg-ocean-600 text-white' :
+        completed ? 'bg-dark-700 text-white' :
+        active ? 'bg-dark-600 text-white' :
         'bg-gray-200 text-gray-500'
       }`}>
         {completed ? <Check className="w-4 h-4 sm:w-6 sm:h-6" /> : stepNumber}
       </div>
       <div className="ml-2 sm:ml-3">
-        <div className={`text-xs sm:text-sm font-semibold ${active ? 'text-ocean-600' : completed ? 'text-green-600' : 'text-gray-500'}`}>
+        <div className={`text-xs sm:text-sm font-semibold ${active ? 'text-dark-600' : completed ? 'text-dark-700' : 'text-gray-500'}`}>
           <span className="hidden sm:inline">{title}</span>
           <span className="sm:hidden">{title.split(' ')[0]}</span>
         </div>
@@ -54,9 +63,9 @@ const Checkout = () => {
         <div className="bg-white rounded-xl p-4 sm:p-6 mb-6 sm:mb-8">
           <div className="flex justify-between items-center max-w-3xl mx-auto">
             <StepIndicator stepNumber={1} title="Dados Pessoais" active={step === 1} completed={step > 1} />
-            <div className={`flex-1 h-1 mx-2 sm:mx-4 ${step > 1 ? 'bg-green-600' : 'bg-gray-200'}`}></div>
+            <div className={`flex-1 h-1 mx-2 sm:mx-4 ${step > 1 ? 'bg-dark-700' : 'bg-gray-200'}`}></div>
             <StepIndicator stepNumber={2} title="Endereço" active={step === 2} completed={step > 2} />
-            <div className={`flex-1 h-1 mx-2 sm:mx-4 ${step > 2 ? 'bg-green-600' : 'bg-gray-200'}`}></div>
+            <div className={`flex-1 h-1 mx-2 sm:mx-4 ${step > 2 ? 'bg-dark-700' : 'bg-gray-200'}`}></div>
             <StepIndicator stepNumber={3} title="Pagamento" active={step === 3} completed={false} />
           </div>
         </div>
@@ -192,7 +201,7 @@ const Checkout = () => {
                   <div className="space-y-3">
                     {/* Credit Card */}
                     <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                      paymentMethod === 'credit' ? 'border-ocean-600 bg-ocean-50' : 'border-gray-200 hover:border-ocean-300'
+                      paymentMethod === 'credit' ? 'border-dark-600 bg-gray-50' : 'border-gray-200 hover:border-gray-300'
                     }`}>
                       <input
                         type="radio"
@@ -200,7 +209,7 @@ const Checkout = () => {
                         value="credit"
                         checked={paymentMethod === 'credit'}
                         onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="w-5 h-5 text-ocean-600"
+                        className="w-5 h-5 text-dark-600"
                       />
                       <CreditCard className="w-6 h-6 ml-3 text-gray-700" />
                       <span className="ml-3 font-semibold text-gray-900">Cartão de Crédito</span>
@@ -209,7 +218,7 @@ const Checkout = () => {
 
                     {/* Pix */}
                     <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                      paymentMethod === 'pix' ? 'border-ocean-600 bg-ocean-50' : 'border-gray-200 hover:border-ocean-300'
+                      paymentMethod === 'pix' ? 'border-dark-600 bg-gray-50' : 'border-gray-200 hover:border-gray-300'
                     }`}>
                       <input
                         type="radio"
@@ -217,16 +226,16 @@ const Checkout = () => {
                         value="pix"
                         checked={paymentMethod === 'pix'}
                         onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="w-5 h-5 text-ocean-600"
+                        className="w-5 h-5 text-dark-600"
                       />
                       <Smartphone className="w-6 h-6 ml-3 text-gray-700" />
                       <span className="ml-3 font-semibold text-gray-900">Pix</span>
-                      <span className="ml-auto text-sm text-green-600 font-semibold">5% de desconto</span>
+                      <span className="ml-auto text-sm text-dark-700 font-semibold">5% de desconto</span>
                     </label>
 
                     {/* Boleto */}
                     <label className={`flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                      paymentMethod === 'boleto' ? 'border-ocean-600 bg-ocean-50' : 'border-gray-200 hover:border-ocean-300'
+                      paymentMethod === 'boleto' ? 'border-dark-600 bg-gray-50' : 'border-gray-200 hover:border-gray-300'
                     }`}>
                       <input
                         type="radio"
@@ -234,7 +243,7 @@ const Checkout = () => {
                         value="boleto"
                         checked={paymentMethod === 'boleto'}
                         onChange={(e) => setPaymentMethod(e.target.value)}
-                        className="w-5 h-5 text-ocean-600"
+                        className="w-5 h-5 text-dark-600"
                       />
                       <Barcode className="w-6 h-6 ml-3 text-gray-700" />
                       <span className="ml-3 font-semibold text-gray-900">Boleto Bancário</span>
@@ -318,7 +327,7 @@ const Checkout = () => {
                     <div className="flex-1">
                       <div className="text-sm font-semibold text-gray-900 line-clamp-1">{item.name}</div>
                       <div className="text-xs text-gray-600">Qtd: {item.quantity}</div>
-                      <div className="text-sm font-bold text-ocean-600">
+                      <div className="text-sm font-bold text-dark-600">
                         R$ {(item.price * item.quantity).toFixed(2).replace('.', ',')}
                       </div>
                     </div>
@@ -326,20 +335,31 @@ const Checkout = () => {
                 ))}
               </div>
 
-              <div className="space-y-3 pt-6 border-t">
+              {/* Cupom de Desconto */}
+              <div className="mb-6 pb-6 border-b">
+                <CouponInput cartTotal={subtotal} />
+              </div>
+
+              <div className="space-y-3">
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
                   <span>R$ {subtotal.toFixed(2).replace('.', ',')}</span>
                 </div>
+                {discount > 0 && (
+                  <div className="flex justify-between text-green-600 font-semibold">
+                    <span>Desconto</span>
+                    <span>- R$ {discount.toFixed(2).replace('.', ',')}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-gray-600">
                   <span>Frete</span>
-                  <span className={shipping === 0 ? 'text-green-600 font-semibold' : ''}>
+                  <span className={shipping === 0 ? 'text-dark-700 font-semibold' : ''}>
                     {shipping === 0 ? 'Grátis' : `R$ ${shipping.toFixed(2).replace('.', ',')}`}
                   </span>
                 </div>
                 <div className="flex justify-between text-xl font-bold text-gray-900 pt-3 border-t">
                   <span>Total</span>
-                  <span className="text-ocean-600">R$ {total.toFixed(2).replace('.', ',')}</span>
+                  <span className="text-dark-600">R$ {total.toFixed(2).replace('.', ',')}</span>
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
+import WishlistButton from './WishlistButton';
 
 const ProductCard = ({ product }) => {
   const discount = product.oldPrice 
@@ -15,14 +16,20 @@ const ProductCard = ({ product }) => {
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+          loading="lazy"
+          decoding="async"
         />
+        {/* Wishlist Button */}
+        <div className="absolute top-4 left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <WishlistButton product={product} size="md" />
+        </div>
         {discount > 0 && (
-          <div className="absolute top-4 right-4 bg-sunset-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+          <div className="absolute top-4 right-4 bg-dark-600 text-white px-3 py-1 rounded-full text-sm font-bold">
             -{discount}%
           </div>
         )}
         {product.featured && (
-          <div className="absolute top-4 left-4 bg-ocean-600 text-white px-3 py-1 rounded-full text-sm font-bold">
+          <div className="absolute bottom-4 left-4 bg-dark-600 text-white px-3 py-1 rounded-full text-sm font-bold">
             Destaque
           </div>
         )}
@@ -34,7 +41,7 @@ const ProductCard = ({ product }) => {
           {product.category}
         </div>
         <Link to={`/produto/${product.id}`}>
-          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-ocean-600 transition-colors">
+          <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-dark-600 transition-colors">
             {product.name}
           </h3>
         </Link>
@@ -48,7 +55,7 @@ const ProductCard = ({ product }) => {
                   key={i}
                   className={`w-4 h-4 ${
                     i < Math.floor(product.rating)
-                      ? 'fill-sunset-500 text-sunset-500'
+                      ? 'fill-gray-500 text-gray-500'
                       : 'text-gray-300'
                   }`}
                 />
@@ -67,7 +74,7 @@ const ProductCard = ({ product }) => {
               R$ {product.oldPrice.toFixed(2).replace('.', ',')}
             </span>
           )}
-          <span className="text-2xl font-bold text-ocean-600">
+          <span className="text-2xl font-bold text-dark-600">
             R$ {product.price.toFixed(2).replace('.', ',')}
           </span>
         </div>
@@ -75,7 +82,7 @@ const ProductCard = ({ product }) => {
         {/* Button */}
         <Link
           to={`/produto/${product.id}`}
-          className="w-full bg-ocean-600 hover:bg-ocean-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg"
+          className="w-full bg-dark-600 hover:bg-dark-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg"
         >
           <ShoppingCart className="w-4 h-4" />
           Ver Detalhes

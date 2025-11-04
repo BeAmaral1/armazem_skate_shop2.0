@@ -4,25 +4,30 @@
 
 @layer base {
   body {
-    @apply font-body bg-white text-gray-900;
+    @apply font-body bg-white text-dark-900;
   }
   
   h1, h2, h3, h4, h5, h6 {
     @apply font-heading;
   }
+  
+  /* Logo styling */
+  .logo-text {
+    @apply font-logo uppercase tracking-tight;
+  }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-ocean-600 hover:bg-ocean-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg;
+    @apply bg-dark-900 hover:bg-dark-950 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg;
   }
   
   .btn-secondary {
-    @apply bg-sunset-600 hover:bg-sunset-700 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg;
+    @apply bg-dark-700 hover:bg-dark-900 text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300 transform hover:scale-105 shadow-lg;
   }
   
   .btn-outline {
-    @apply border-2 border-ocean-600 text-ocean-600 hover:bg-ocean-600 hover:text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300;
+    @apply border-2 border-dark-900 text-dark-900 hover:bg-dark-900 hover:text-white font-semibold py-3 px-8 rounded-lg transition-all duration-300;
   }
   
   .card {
@@ -30,7 +35,7 @@
   }
   
   .input-field {
-    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ocean-500 focus:border-transparent;
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-dark-600 focus:border-transparent;
   }
 }
 
@@ -50,12 +55,40 @@
   animation: slideInUp 0.6s ease-out;
 }
 
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes progress {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-progress {
+  animation: progress linear;
+}
+
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Custom scrollbar */
+/* Custom scrollbar - Preto e Branco */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -65,10 +98,10 @@ html {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #00acc1;
+  background: #495057;
   border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0097a7;
+  background: #212529;
 }

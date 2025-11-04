@@ -1,14 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Star, Check, ArrowLeft, Heart, Share2 } from 'lucide-react';
+import { ShoppingCart, Star, Check, ArrowLeft, Heart, Share2, RotateCw, Grid3x3 } from 'lucide-react';
 import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
+import { useRecentlyViewed } from '../context/RecentlyViewedContext';
 import ProductCard from '../components/ProductCard';
+import WishlistButton from '../components/WishlistButton';
+import ReviewsSection from '../components/ReviewsSection';
+import Image360Viewer from '../components/Image360Viewer';
+import SEO from '../components/SEO';
+import { has360View, generate360Images } from '../utils/generate360Images';
 
 const ProductDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { addToCart } = useCart();
+  const { addProduct } = useRecentlyViewed();
   
   const product = products.find(p => p.id === parseInt(id));
   
@@ -17,6 +24,18 @@ const ProductDetail = () => {
   const [selectedColor, setSelectedColor] = useState('');
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [view360, setView360] = useState(false);
+  
+  // Verificar se produto tem visualização 360°
+  const has360 = product ? has360View(product.id) : false;
+  const images360 = has360 && product ? generate360Images(product.id, product.images[0]) : [];
+
+  // Adicionar produto ao histórico quando a página carregar
+  useEffect(() => {
+    if (product) {
+      addProduct(product);
+    }
+  }, [product?.id]); // Dependência no ID para atualizar se mudar de produto
 
   if (!product) {
     return (
@@ -56,12 +75,18 @@ const ProductDetail = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen py-4 sm:py-8">
+      <SEO 
+        title={product.name}
+        description={product.description}
+        image={product.images[0]}
+        type="product"
+      />
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
         <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 mb-4 sm:mb-8 overflow-x-auto">
-          <Link to="/" className="hover:text-ocean-600 whitespace-nowrap">Início</Link>
+          <Link to="/" className="hover:text-dark-600 whitespace-nowrap">Início</Link>
           <span>/</span>
-          <Link to="/produtos" className="hover:text-ocean-600 whitespace-nowrap">Produtos</Link>
+          <Link to="/produtos" className="hover:text-dark-600 whitespace-nowrap">Produtos</Link>
           <span>/</span>
           <span className="text-gray-900 truncate">{product.name}</span>
         </div>
@@ -69,38 +94,76 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 mb-8 sm:mb-16">
           {/* Images Gallery */}
           <div>
-            <div className="bg-white rounded-xl overflow-hidden mb-4 aspect-square">
-              <img
-                src={product.images[selectedImage]}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-            <div className="grid grid-cols-3 gap-2 sm:gap-4">
-              {product.images.map((image, index) => (
+            {/* Toggle 360° / Gallery */}
+            {has360 && (
+              <div className="flex gap-2 mb-4">
                 <button
-                  key={index}
-                  onClick={() => setSelectedImage(index)}
-                  className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
-                    selectedImage === index
-                      ? 'border-ocean-600 ring-2 ring-ocean-200'
-                      : 'border-gray-200 hover:border-ocean-300'
+                  onClick={() => setView360(false)}
+                  className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                    !view360
+                      ? 'bg-dark-900 text-white shadow-md'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
                   }`}
                 >
-                  <img
-                    src={image}
-                    alt={`${product.name} ${index + 1}`}
-                    className="w-full h-full object-cover"
-                  />
+                  <Grid3x3 className="w-5 h-5" />
+                  Galeria
                 </button>
-              ))}
-            </div>
+                <button
+                  onClick={() => setView360(true)}
+                  className={`flex-1 py-3 px-4 rounded-lg font-medium transition-all flex items-center justify-center gap-2 ${
+                    view360
+                      ? 'bg-dark-900 text-white shadow-md'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 border-2 border-gray-200'
+                  }`}
+                >
+                  <RotateCw className="w-5 h-5" />
+                  360°
+                </button>
+              </div>
+            )}
+
+            {/* 360° Viewer or Normal Gallery */}
+            {view360 && has360 ? (
+              <Image360Viewer images={images360} productName={product.name} />
+            ) : (
+              <>
+                <div className="bg-white rounded-xl overflow-hidden mb-4 aspect-square">
+                  <img
+                    src={product.images[selectedImage]}
+                    alt={product.name}
+                    className="w-full h-full object-cover"
+                    loading="eager"
+                  />
+                </div>
+                <div className="grid grid-cols-3 gap-2 sm:gap-4">
+                  {product.images.map((image, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`aspect-square rounded-lg overflow-hidden border-2 transition-all ${
+                        selectedImage === index
+                          ? 'border-dark-600 ring-2 ring-gray-200'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <img
+                        src={image}
+                        alt={`${product.name} ${index + 1}`}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
 
           {/* Product Info */}
           <div>
             <div className="bg-white rounded-xl p-8">
-              <div className="text-sm text-ocean-600 uppercase tracking-wide mb-2">
+              <div className="text-sm text-dark-600 uppercase tracking-wide mb-2">
                 {product.category}
               </div>
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading font-bold text-gray-900 mb-4">
@@ -116,7 +179,7 @@ const ProductDetail = () => {
                         key={i}
                         className={`w-5 h-5 ${
                           i < Math.floor(product.rating)
-                            ? 'fill-sunset-500 text-sunset-500'
+                            ? 'fill-gray-500 text-gray-500'
                             : 'text-gray-300'
                         }`}
                       />
@@ -135,12 +198,12 @@ const ProductDetail = () => {
                     <span className="text-lg text-gray-400 line-through">
                       R$ {product.oldPrice.toFixed(2).replace('.', ',')}
                     </span>
-                    <span className="bg-sunset-100 text-sunset-700 px-3 py-1 rounded-full text-sm font-bold">
+                    <span className="bg-gray-100 text-dark-700 px-3 py-1 rounded-full text-sm font-bold">
                       -{Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)}%
                     </span>
                   </div>
                 )}
-                <div className="text-3xl sm:text-4xl font-bold text-ocean-600">
+                <div className="text-3xl sm:text-4xl font-bold text-dark-600">
                   R$ {product.price.toFixed(2).replace('.', ',')}
                 </div>
                 <p className="text-sm text-gray-600 mt-2">
@@ -165,8 +228,8 @@ const ProductDetail = () => {
                         onClick={() => setSelectedSize(size)}
                         className={`px-4 py-2 border-2 rounded-lg font-medium transition-all ${
                           selectedSize === size
-                            ? 'border-ocean-600 bg-ocean-50 text-ocean-600'
-                            : 'border-gray-300 hover:border-ocean-400'
+                            ? 'border-dark-600 bg-gray-50 text-dark-600'
+                            : 'border-gray-300 hover:border-gray-400'
                         }`}
                       >
                         {size}
@@ -187,8 +250,8 @@ const ProductDetail = () => {
                         onClick={() => setSelectedColor(color)}
                         className={`px-4 py-2 border-2 rounded-lg font-medium transition-all ${
                           selectedColor === color
-                            ? 'border-ocean-600 bg-ocean-50 text-ocean-600'
-                            : 'border-gray-300 hover:border-ocean-400'
+                            ? 'border-dark-600 bg-gray-50 text-dark-600'
+                            : 'border-gray-300 hover:border-gray-400'
                         }`}
                       >
                         {color}
@@ -204,14 +267,14 @@ const ProductDetail = () => {
                 <div className="flex items-center gap-4">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-ocean-600 transition-colors"
+                    className="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-dark-600 transition-colors"
                   >
                     -
                   </button>
                   <span className="text-xl font-semibold w-12 text-center">{quantity}</span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-ocean-600 transition-colors"
+                    className="w-10 h-10 border-2 border-gray-300 rounded-lg hover:border-dark-600 transition-colors"
                   >
                     +
                   </button>
@@ -224,8 +287,8 @@ const ProductDetail = () => {
                   onClick={handleAddToCart}
                   className={`w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
                     addedToCart
-                      ? 'bg-green-600 hover:bg-green-700 text-white'
-                      : 'bg-ocean-600 hover:bg-ocean-700 text-white'
+                      ? 'bg-dark-700 hover:bg-dark-800 text-white'
+                      : 'bg-dark-600 hover:bg-dark-700 text-white'
                   }`}
                 >
                   {addedToCart ? (
@@ -242,10 +305,9 @@ const ProductDetail = () => {
                 </button>
 
                 <div className="flex gap-2">
-                  <button className="flex-1 btn-outline flex items-center justify-center gap-2">
-                    <Heart className="w-5 h-5" />
-                    <span className="hidden sm:inline">Favoritar</span>
-                  </button>
+                  <div className="flex-1">
+                    <WishlistButton product={product} size="lg" showLabel={true} />
+                  </div>
                   <button className="flex-1 btn-outline flex items-center justify-center gap-2">
                     <Share2 className="w-5 h-5" />
                     <span className="hidden sm:inline">Compartilhar</span>
@@ -255,7 +317,7 @@ const ProductDetail = () => {
 
               {/* Info */}
               <div className="mt-6 pt-6 border-t space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-green-600">
+                <div className="flex items-center gap-2 text-dark-700">
                   <Check className="w-5 h-5" />
                   <span>Em estoque - Envio imediato</span>
                 </div>
@@ -273,42 +335,9 @@ const ProductDetail = () => {
         </div>
 
         {/* Reviews */}
-        {product.reviews && product.reviews.length > 0 && (
-          <div className="mb-16">
-            <div className="bg-white rounded-xl p-8">
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
-                Avaliações dos Clientes
-              </h2>
-              <div className="space-y-6">
-                {product.reviews.map(review => (
-                  <div key={review.id} className="border-b pb-6 last:border-b-0 last:pb-0">
-                    <div className="flex items-center justify-between mb-2">
-                      <div className="flex items-center gap-4">
-                        <span className="font-semibold text-gray-900">{review.author}</span>
-                        <div className="flex items-center">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`w-4 h-4 ${
-                                i < review.rating
-                                  ? 'fill-sunset-500 text-sunset-500'
-                                  : 'text-gray-300'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      <span className="text-sm text-gray-500">
-                        {new Date(review.date).toLocaleDateString('pt-BR')}
-                      </span>
-                    </div>
-                    <p className="text-gray-700">{review.comment}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+        <div className="mb-16">
+          <ReviewsSection productId={product.id} />
+        </div>
 
         {/* Related Products */}
         {relatedProducts.length > 0 && (

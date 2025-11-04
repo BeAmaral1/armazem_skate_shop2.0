@@ -33,7 +33,7 @@ const Cart = () => {
   return (
     <div className="bg-gray-50 min-h-screen py-4 sm:py-8">
       <div className="container mx-auto px-4">
-        <Link to="/produtos" className="inline-flex items-center gap-2 text-ocean-600 hover:text-ocean-700 mb-4 sm:mb-6 text-sm sm:text-base">
+        <Link to="/produtos" className="inline-flex items-center gap-2 text-dark-600 hover:text-dark-700 mb-4 sm:mb-6 text-sm sm:text-base">
           <ArrowLeft className="w-4 h-4 sm:w-5 sm:h-5" />
           <span className="hidden sm:inline">Continuar Comprando</span>
           <span className="sm:hidden">Voltar</span>
@@ -58,7 +58,7 @@ const Cart = () => {
                   </div>
 
                   <div className="flex-1">
-                    <Link to={`/produto/${item.id}`} className="text-sm sm:text-base font-semibold text-gray-900 hover:text-ocean-600 transition-colors line-clamp-2">
+                    <Link to={`/produto/${item.id}`} className="text-sm sm:text-base font-semibold text-gray-900 hover:text-dark-600 transition-colors line-clamp-2">
                       {item.name}
                     </Link>
                     <div className="text-sm text-gray-600 mt-1">
@@ -66,7 +66,7 @@ const Cart = () => {
                       {item.selectedSize && item.selectedColor && <span> • </span>}
                       {item.selectedColor && <span>Cor: {item.selectedColor}</span>}
                     </div>
-                    <div className="text-base sm:text-lg font-bold text-ocean-600 mt-2">
+                    <div className="text-base sm:text-lg font-bold text-dark-600 mt-2">
                       R$ {item.price.toFixed(2).replace('.', ',')}
                     </div>
                   </div>
@@ -83,14 +83,14 @@ const Cart = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, item.quantity - 1)}
-                        className="w-8 h-8 border-2 border-gray-300 rounded hover:border-ocean-600 transition-colors flex items-center justify-center"
+                        className="w-8 h-8 border-2 border-gray-300 rounded hover:border-dark-600 transition-colors flex items-center justify-center"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
                       <span className="w-8 text-center font-semibold">{item.quantity}</span>
                       <button
                         onClick={() => updateQuantity(item.id, item.selectedSize, item.selectedColor, item.quantity + 1)}
-                        className="w-8 h-8 border-2 border-gray-300 rounded hover:border-ocean-600 transition-colors flex items-center justify-center"
+                        className="w-8 h-8 border-2 border-gray-300 rounded hover:border-dark-600 transition-colors flex items-center justify-center"
                       >
                         <Plus className="w-4 h-4" />
                       </button>
@@ -115,7 +115,7 @@ const Cart = () => {
                 </div>
                 <div className="flex justify-between text-gray-600">
                   <span>Frete</span>
-                  <span className={shipping === 0 ? 'text-green-600 font-semibold' : ''}>
+                  <span className={shipping === 0 ? 'text-dark-700 font-semibold' : ''}>
                     {shipping === 0 ? 'Grátis' : `R$ ${shipping.toFixed(2).replace('.', ',')}`}
                   </span>
                 </div>
@@ -128,7 +128,7 @@ const Cart = () => {
 
               <div className="flex justify-between text-xl font-bold text-gray-900 mb-6">
                 <span>Total</span>
-                <span className="text-ocean-600">R$ {total.toFixed(2).replace('.', ',')}</span>
+                <span className="text-dark-600">R$ {total.toFixed(2).replace('.', ',')}</span>
               </div>
 
               <button
@@ -138,7 +138,7 @@ const Cart = () => {
                 Finalizar Compra
               </button>
 
-              <Link to="/produtos" className="block text-center text-ocean-600 hover:text-ocean-700 font-semibold">
+              <Link to="/produtos" className="block text-center text-dark-600 hover:text-dark-700 font-semibold">
                 Adicionar mais produtos
               </Link>
 

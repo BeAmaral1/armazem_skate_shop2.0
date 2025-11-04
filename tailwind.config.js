@@ -7,46 +7,98 @@ export default {
   theme: {
     extend: {
       colors: {
+        // Paleta Monocromática: Preto e Branco Total
+        // Usado para todo o site - visual minimalista e profissional
+        
+        // Preto (Dark) - Tons escuros
+        dark: {
+          50: '#f8f9fa',   // Cinza muito claro
+          100: '#e9ecef',  // Cinza claro
+          200: '#dee2e6',  // Cinza claro médio
+          300: '#adb5bd',  // Cinza médio
+          400: '#6c757d',  // Cinza
+          500: '#495057',  // Cinza escuro
+          600: '#343a40',  // Cinza muito escuro
+          700: '#212529',  // Quase preto
+          800: '#1a1d20',  // Preto suave
+          900: '#0d0f10',  // Preto profundo
+          950: '#000000',  // Preto puro
+        },
+        
+        // Branco (Light) - Tons claros
+        light: {
+          50: '#ffffff',   // Branco puro
+          100: '#f8f9fa',  // Branco gelo
+          200: '#e9ecef',  // Branco suave
+          300: '#dee2e6',  // Cinza muito claro
+          400: '#ced4da',  // Cinza claro
+          500: '#adb5bd',  // Cinza médio claro
+          600: '#6c757d',  // Cinza médio
+          700: '#495057',  // Cinza escuro
+          800: '#343a40',  // Cinza muito escuro
+          900: '#212529',  // Quase preto
+        },
+        
+        // Primary (substitui ocean) - Tons de cinza para CTAs
+        primary: {
+          50: '#f8f9fa',
+          100: '#e9ecef',
+          200: '#dee2e6',
+          300: '#ced4da',
+          400: '#adb5bd',
+          500: '#6c757d',
+          600: '#495057',
+          700: '#343a40',
+          800: '#212529',
+          900: '#000000',
+        },
+        
+        // Accent (substitui sunset) - Preto para destaques
+        accent: {
+          50: '#f8f9fa',
+          100: '#e9ecef',
+          200: '#dee2e6',
+          300: '#ced4da',
+          400: '#adb5bd',
+          500: '#6c757d',
+          600: '#495057',
+          700: '#343a40',
+          800: '#212529',
+          900: '#000000',
+        },
+        
+        // Mapeamento para compatibilidade (ocean → primary)
         ocean: {
-          50: '#e0f7fa',
-          100: '#b2ebf2',
-          200: '#80deea',
-          300: '#4dd0e1',
-          400: '#26c6da',
-          500: '#00bcd4',
-          600: '#00acc1',
-          700: '#0097a7',
-          800: '#00838f',
-          900: '#006064',
+          50: '#f8f9fa',
+          100: '#e9ecef',
+          200: '#dee2e6',
+          300: '#ced4da',
+          400: '#adb5bd',
+          500: '#6c757d',
+          600: '#495057',
+          700: '#343a40',
+          800: '#212529',
+          900: '#000000',
         },
-        sand: {
-          50: '#faf8f3',
-          100: '#f5f0e5',
-          200: '#ebe1cc',
-          300: '#dcc9a8',
-          400: '#c9ad7f',
-          500: '#b8915b',
-          600: '#a67c4a',
-          700: '#8a653d',
-          800: '#715336',
-          900: '#5e452f',
-        },
+        
+        // Mapeamento para compatibilidade (sunset → accent)
         sunset: {
-          50: '#fff3e0',
-          100: '#ffe0b2',
-          200: '#ffcc80',
-          300: '#ffb74d',
-          400: '#ffa726',
-          500: '#ff9800',
-          600: '#fb8c00',
-          700: '#f57c00',
-          800: '#ef6c00',
-          900: '#e65100',
+          50: '#f8f9fa',
+          100: '#e9ecef',
+          200: '#dee2e6',
+          300: '#ced4da',
+          400: '#adb5bd',
+          500: '#6c757d',
+          600: '#495057',
+          700: '#343a40',
+          800: '#212529',
+          900: '#000000',
         }
       },
       fontFamily: {
         'heading': ['Montserrat', 'sans-serif'],
         'body': ['Inter', 'sans-serif'],
+        'logo': ['Anton', 'Impact', 'Arial Black', 'sans-serif'],
       }
     },
   },
