@@ -83,15 +83,19 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2 sm:space-x-3 group">
+          <Link to="/" className="flex items-center gap-3 group">
             <img 
               src="/logo_armazem.png" 
               alt="Armazem Skate Shop" 
-              className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain flex-shrink-0 group-hover:scale-105 transition-transform"
+              className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain flex-shrink-0 group-hover:scale-105 transition-transform duration-300"
             />
-            <div className="min-w-0">
-              <h1 className="text-base sm:text-lg md:text-xl font-logo font-bold text-dark-900 truncate uppercase tracking-tight">Armazem</h1>
-              <p className="text-xs text-dark-600 hidden sm:block font-bold">SKATE SHOP</p>
+            <div className="flex flex-col justify-center">
+              <h1 className="text-lg sm:text-xl md:text-2xl font-logo font-bold text-dark-900 uppercase tracking-wide leading-none">
+                Armazém
+              </h1>
+              <p className="text-xs sm:text-sm text-dark-600 font-semibold tracking-wider leading-none mt-0.5">
+                SKATE SHOP
+              </p>
             </div>
           </Link>
 

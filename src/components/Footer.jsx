@@ -35,15 +35,15 @@ const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {/* About */}
           <div>
-            <div className="flex items-center space-x-3 mb-4">
+            <div className="flex items-center gap-3 mb-6">
               <img 
                 src="/logo_armazem.png" 
                 alt="Armazem Skate Shop" 
                 className="w-12 h-12 sm:w-14 sm:h-14 object-contain flex-shrink-0"
               />
-              <div>
-                <h3 className="text-lg sm:text-xl font-logo font-bold text-white uppercase tracking-tight">Armazem</h3>
-                <p className="text-xs font-bold text-gray-400">SKATE SHOP</p>
+              <div className="flex flex-col justify-center">
+                <h3 className="text-xl sm:text-2xl font-logo font-bold text-white uppercase tracking-wide leading-none">Armazém</h3>
+                <p className="text-xs sm:text-sm font-semibold text-gray-400 tracking-wider leading-none mt-0.5">SKATE SHOP</p>
               </div>
             </div>
             <p className="text-sm mb-4 leading-relaxed">
@@ -84,7 +84,8 @@ const Footer = () => {
               <li><Link to="/sobre" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Sobre Nós</Link></li>
               <li><Link to="/contato" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Contato</Link></li>
               <li><Link to="/faq" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Perguntas Frequentes</Link></li>
-              <li><Link to="/login" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Minha Conta</Link></li>
+              <li><Link to="/termos-uso" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Termos de Uso</Link></li>
+              <li><Link to="/politica-privacidade" className="hover:text-white transition-colors inline-flex items-center gap-2"><span className="text-gray-400">›</span> Política de Privacidade</Link></li>
             </ul>
           </div>
 

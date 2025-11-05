@@ -1,5 +1,6 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
@@ -39,6 +40,8 @@ const Notifications = lazy(() => import('./pages/Notifications'));
 const RecentlyViewed = lazy(() => import('./pages/RecentlyViewed'));
 const FAQ = lazy(() => import('./pages/FAQ'));
 const Referrals = lazy(() => import('./pages/Referrals'));
+const TermsOfService = lazy(() => import('./pages/TermsOfService'));
+const PrivacyPolicy = lazy(() => import('./pages/PrivacyPolicy'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -55,6 +58,28 @@ function App() {
                     <CartProvider>
           <Router>
             <ScrollToTop />
+            <Toaster 
+              position="top-right"
+              toastOptions={{
+                duration: 3000,
+                style: {
+                  background: '#333',
+                  color: '#fff',
+                },
+                success: {
+                  iconTheme: {
+                    primary: '#10b981',
+                    secondary: '#fff',
+                  },
+                },
+                error: {
+                  iconTheme: {
+                    primary: '#ef4444',
+                    secondary: '#fff',
+                  },
+                },
+              }}
+            />
             <div className="flex flex-col min-h-screen overflow-x-hidden">
               <Header />
               <ReferralBanner />
@@ -68,6 +93,8 @@ function App() {
                   <Route path="/sobre" element={<About />} />
                   <Route path="/contato" element={<Contact />} />
                   <Route path="/faq" element={<FAQ />} />
+                  <Route path="/termos-uso" element={<TermsOfService />} />
+                  <Route path="/politica-privacidade" element={<PrivacyPolicy />} />
                   <Route path="/login" element={<Login />} />
                   
                   {/* Rotas Protegidas */}
