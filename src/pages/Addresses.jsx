@@ -23,6 +23,8 @@ const Addresses = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
   const [toast, setToast] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [addressToDelete, setAddressToDelete] = useState(null);
 
   const [formData, setFormData] = useState({
     label: '',
@@ -106,8 +108,14 @@ const Addresses = () => {
   };
 
   const handleDelete = (id) => {
-    if (window.confirm('Tem certeza que deseja excluir este endereço?')) {
-      setAddresses((prev) => prev.filter((addr) => addr.id !== id));
+    const address = addresses.find(addr => addr.id === id);
+    setAddressToDelete(address);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (addressToDelete) {
+      setAddresses((prev) => prev.filter((addr) => addr.id !== addressToDelete.id));
       setToast({
         type: 'success',
         message: {
@@ -115,6 +123,8 @@ const Addresses = () => {
           description: 'O endereço foi excluído com sucesso.',
         },
       });
+      setShowDeleteModal(false);
+      setAddressToDelete(null);
     }
   };
 
@@ -421,6 +431,93 @@ const Addresses = () => {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Modal de Confirmação de Exclusão */}
+      {showDeleteModal && addressToDelete && (
+        <>
+          {/* Overlay */}
+          <div 
+            className="fixed inset-0 bg-black/50 z-50 animate-fadeIn"
+            onClick={() => setShowDeleteModal(false)}
+          />
+          
+          {/* Modal */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div 
+              className="bg-white rounded-2xl shadow-2xl max-w-md w-full animate-slideUp"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <Trash2 className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      Excluir Endereço?
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-0.5">
+                      Esta ação não pode ser desfeita
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6">
+                <p className="text-gray-700 leading-relaxed mb-4">
+                  Você está prestes a excluir o endereço:
+                </p>
+                <div className="bg-gray-50 rounded-lg p-4 border border-gray-200">
+                  <div className="flex items-start gap-2">
+                    <MapPin className="w-5 h-5 text-gray-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-gray-900">{addressToDelete.label}</p>
+                      <p className="text-sm text-gray-600 mt-1">
+                        {addressToDelete.street}
+                        {addressToDelete.complement && `, ${addressToDelete.complement}`}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        {addressToDelete.neighborhood} - {addressToDelete.city}, {addressToDelete.state}
+                      </p>
+                      <p className="text-sm text-gray-600">{addressToDelete.zipCode}</p>
+                    </div>
+                  </div>
+                </div>
+                {addressToDelete.isDefault && (
+                  <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start gap-2">
+                    <Home className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm text-amber-800">
+                      <strong>Atenção:</strong> Este é seu endereço padrão. Após excluí-lo, você precisará definir outro como padrão.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Actions */}
+              <div className="p-6 border-t border-gray-200 flex gap-3">
+                <button
+                  onClick={() => {
+                    setShowDeleteModal(false);
+                    setAddressToDelete(null);
+                  }}
+                  className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Excluir Endereço
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </>
   );

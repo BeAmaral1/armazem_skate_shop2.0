@@ -30,6 +30,7 @@ const Notifications = () => {
 
   const [filter, setFilter] = useState('all'); // all, unread, order, promotion, review, wishlist, system
   const [showActions, setShowActions] = useState(false);
+  const [showClearModal, setShowClearModal] = useState(false);
 
   const allNotifications = getAllNotifications();
   const unreadNotifications = getUnreadNotifications();
@@ -198,11 +199,7 @@ const Notifications = () => {
                   )}
                   {allNotifications.length > 0 && (
                     <button
-                      onClick={() => {
-                        if (confirm('Deseja realmente limpar todas as notificações?')) {
-                          clearAll();
-                        }
-                      }}
+                      onClick={() => setShowClearModal(true)}
                       className="flex items-center gap-2 px-3 py-2 bg-red-100 text-red-700 rounded-lg text-sm font-medium hover:bg-red-200 transition-colors"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -307,6 +304,76 @@ const Notifications = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal de Confirmação */}
+      {showClearModal && (
+        <>
+          {/* Overlay */}
+          <div 
+            className="fixed inset-0 bg-black/50 z-50 animate-fadeIn"
+            onClick={() => setShowClearModal(false)}
+          />
+          
+          {/* Modal */}
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div 
+              className="bg-white rounded-2xl shadow-2xl max-w-md w-full animate-slideUp"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
+                    <Trash2 className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900">
+                      Limpar Notificações?
+                    </h3>
+                    <p className="text-sm text-gray-500 mt-0.5">
+                      Esta ação não pode ser desfeita
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Content */}
+              <div className="p-6">
+                <p className="text-gray-700 leading-relaxed">
+                  Você está prestes a remover <strong className="text-gray-900">{allNotifications.length} {allNotifications.length === 1 ? 'notificação' : 'notificações'}</strong>.
+                  Deseja continuar?
+                </p>
+                <div className="mt-4 bg-amber-50 border border-amber-200 rounded-lg p-3 flex items-start gap-2">
+                  <Bell className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-sm text-amber-800">
+                    Todas as notificações serão removidas permanentemente.
+                  </p>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="p-6 border-t border-gray-200 flex gap-3">
+                <button
+                  onClick={() => setShowClearModal(false)}
+                  className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                >
+                  Cancelar
+                </button>
+                <button
+                  onClick={() => {
+                    clearAll();
+                    setShowClearModal(false);
+                  }}
+                  className="flex-1 px-4 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors flex items-center justify-center gap-2"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Limpar Todas
+                </button>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };

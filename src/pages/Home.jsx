@@ -177,34 +177,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Newsletter */}
-      <section className="py-16 bg-dark-600 text-white">
-        <div className="container mx-auto px-4">
-          <div className="max-w-3xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-heading font-bold mb-4">
-              Fique por dentro das novidades
-            </h2>
-            <p className="text-lg mb-8 text-gray-100">
-              Cadastre-se e receba em primeira mão nossas promoções e lançamentos
-            </p>
-            <form className="flex flex-col md:flex-row gap-4 max-w-xl mx-auto">
-              <input
-                type="email"
-                placeholder="Seu melhor e-mail"
-                className="flex-1 px-6 py-4 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-500"
-                required
-              />
-              <button type="submit" className="btn-secondary whitespace-nowrap">
-                Inscrever-se
-              </button>
-            </form>
-            <p className="text-sm text-gray-200 mt-4">
-              Não enviamos spam. Você pode cancelar a qualquer momento.
-            </p>
-          </div>
-        </div>
-      </section>
     </div>
   );
 };
