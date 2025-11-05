@@ -9,11 +9,13 @@ import { CouponsProvider } from './context/CouponsContext';
 import { NotificationsProvider } from './context/NotificationsContext';
 import { RecentlyViewedProvider } from './context/RecentlyViewedContext';
 import { FAQProvider } from './context/FAQContext';
+import { ReferralProvider } from './context/ReferralContext';
 import PrivateRoute from './components/PrivateRoute';
 import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
+import ReferralBanner from './components/ReferralBanner';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -36,6 +38,7 @@ const MyCoupons = lazy(() => import('./pages/MyCoupons'));
 const Notifications = lazy(() => import('./pages/Notifications'));
 const RecentlyViewed = lazy(() => import('./pages/RecentlyViewed'));
 const FAQ = lazy(() => import('./pages/FAQ'));
+const Referrals = lazy(() => import('./pages/Referrals'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
@@ -48,12 +51,14 @@ function App() {
               <ReviewsProvider>
                 <OrdersProvider>
                   <WishlistProvider>
+                    <ReferralProvider>
                     <CartProvider>
           <Router>
             <ScrollToTop />
-            <div className="flex flex-col min-h-screen">
+            <div className="flex flex-col min-h-screen overflow-x-hidden">
               <Header />
-              <main className="flex-grow">
+              <ReferralBanner />
+              <main className="flex-grow overflow-x-hidden">
                 <Suspense fallback={<LoadingScreen />}>
                   <Routes>
                   <Route path="/" element={<Home />} />
@@ -126,6 +131,11 @@ function App() {
                       <RecentlyViewed />
                     </PrivateRoute>
                   } />
+                  <Route path="/indicar-amigos" element={
+                    <PrivateRoute>
+                      <Referrals />
+                    </PrivateRoute>
+                  } />
                     {/* 404 Route */}
                     <Route path="*" element={<NotFound />} />
                   </Routes>
@@ -135,6 +145,7 @@ function App() {
             </div>
           </Router>
                     </CartProvider>
+                    </ReferralProvider>
                   </WishlistProvider>
                 </OrdersProvider>
               </ReviewsProvider>

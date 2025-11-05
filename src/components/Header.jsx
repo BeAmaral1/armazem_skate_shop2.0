@@ -11,6 +11,7 @@ const Header = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
   const { getCartCount } = useCart();
   const { getWishlistCount } = useWishlist();
   const { user, logout, isAuthenticated } = useAuth();
@@ -19,6 +20,18 @@ const Header = () => {
   const cartCount = getCartCount();
   const wishlistCount = getWishlistCount();
   const userMenuRef = useRef(null);
+  const userButtonRef = useRef(null);
+
+  // Calcular posição do dropdown
+  useEffect(() => {
+    if (isUserMenuOpen && userButtonRef.current) {
+      const rect = userButtonRef.current.getBoundingClientRect();
+      setDropdownPosition({
+        top: rect.bottom + 8,
+        right: window.innerWidth - rect.right
+      });
+    }
+  }, [isUserMenuOpen]);
 
   // Fechar menu ao clicar fora
   useEffect(() => {
@@ -28,9 +41,11 @@ const Header = () => {
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    if (isUserMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }
+  }, [isUserMenuOpen]);
 
   const handleLogout = () => {
     logout();
@@ -146,8 +161,10 @@ const Header = () => {
             {isAuthenticated() ? (
               <div className="relative" ref={userMenuRef}>
                 <button
+                  ref={userButtonRef}
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
                   className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  id="user-menu-button"
                 >
                   <div className="w-8 h-8 bg-dark-900 rounded-full flex items-center justify-center">
                     <span className="text-white font-bold text-sm">
@@ -162,14 +179,20 @@ const Header = () => {
 
                 {/* Dropdown Menu */}
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                  <div 
+                    className="fixed w-48 sm:w-56 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-[100]"
+                    style={{ 
+                      top: `${dropdownPosition.top}px`,
+                      right: `${dropdownPosition.right}px`,
+                      maxWidth: 'calc(100vw - 2rem)' 
+                    }}>
                     <div className="px-4 py-3 border-b border-gray-200">
                       <p className="text-sm font-semibold text-gray-900">{user?.name}</p>
                       <p className="text-xs text-gray-500 truncate">{user?.email}</p>
                     </div>
                     <Link
                       to="/perfil"
-                      onClick={() => setIsUserMenuOpen(false)}
+                      onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                       className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <User className="w-4 h-4" />
@@ -177,7 +200,7 @@ const Header = () => {
                     </Link>
                     <Link
                       to="/pedidos"
-                      onClick={() => setIsUserMenuOpen(false)}
+                      onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                       className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <Package className="w-4 h-4" />
@@ -185,7 +208,7 @@ const Header = () => {
                     </Link>
                     <Link
                       to="/favoritos"
-                      onClick={() => setIsUserMenuOpen(false)}
+                      onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
                       className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
                     >
                       <Heart className="w-4 h-4" />

@@ -10,7 +10,7 @@ const Home = () => {
   const featuredProducts = products.filter(p => p.featured).slice(0, 4);
 
   return (
-    <div>
+    <div className="w-full overflow-x-hidden">
       <SEO 
         title="Armazém Skate Shop - Surf e Skate"
         description="A melhor loja de surf e skate do Brasil. Pranchas, shapes, acessórios e vestuário das melhores marcas. Frete grátis acima de R$299."

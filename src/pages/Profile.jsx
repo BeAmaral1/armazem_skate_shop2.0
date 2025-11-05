@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Edit, Mail, Phone, CreditCard, Calendar, MapPin, Heart, Package } from 'lucide-react';
+import { Edit, Mail, Phone, CreditCard, Calendar, MapPin, Heart, Package, Lock } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import ProfileSidebar from '../components/ProfileSidebar';
 

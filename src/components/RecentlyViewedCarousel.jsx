@@ -161,12 +161,6 @@ const RecentlyViewedCarousel = ({ limit = 6, showTitle = true, showControls = tr
           </div>
         )}
       </div>
-
-      <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
     </section>
   );
 };

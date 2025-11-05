@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { User, MapPin, Lock, Heart, Package, Tag, Bell, Eye } from 'lucide-react';
+import { User, MapPin, Lock, Heart, Package, Tag, Bell, Eye, Gift } from 'lucide-react';
 
 const ProfileSidebar = () => {
   const location = useLocation();
@@ -23,6 +23,12 @@ const ProfileSidebar = () => {
       path: '/cupons',
       icon: Tag,
       description: 'Cupons de desconto',
+    },
+    {
+      name: 'Indicar Amigos',
+      path: '/indicar-amigos',
+      icon: Gift,
+      description: 'Ganhe R$ 20 por indicação',
     },
     {
       name: 'Notificações',
