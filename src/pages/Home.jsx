@@ -9,6 +9,69 @@ import { products, blogPosts } from '../data/products';
 const Home = () => {
   const featuredProducts = products.filter(p => p.featured).slice(0, 4);
 
+  // Sistema de Campanhas Sazonais - Altere facilmente aqui!
+  const campaigns = [
+    {
+      id: 'esquenta-verao',
+      title: 'Esquenta Verão',
+      subtitle: 'Armazém Skate Shop',
+      description: 'Prepare-se para o verão com até 40% OFF em pranchas e acessórios!',
+      image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=1920&q=80',
+      active: true,
+    },
+    {
+      id: 'liquidacao-inverno',
+      title: '❄️ Liquidação de Inverno',
+      subtitle: 'Armazém Skate Shop',
+      description: 'Mega liquidação! Até 70% OFF em vestuário e acessórios de inverno',
+      image: 'https://images.unsplash.com/photo-1564982752979-3f7bc974d29a?w=1920&q=80',
+      active: false,
+    },
+    {
+      id: 'black-friday',
+      title: '🔥 Black Friday Armazém',
+      subtitle: 'Surf & Skate',
+      description: 'Os melhores preços do ano! Até 50% OFF em TUDO + Frete Grátis',
+      image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1920&q=80',
+      active: false,
+    },
+    {
+      id: 'volta-as-aulas',
+      title: '🎒 Volta às Aulas',
+      subtitle: 'Armazém Skate Shop',
+      description: 'Começe o ano com estilo! 30% OFF em mochilas, ténis e skates',
+      image: 'https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=1920&q=80',
+      active: false,
+    },
+    {
+      id: 'dia-dos-pais',
+      title: '👨‍👦 Especial Dia dos Pais',
+      subtitle: 'Armazém Skate Shop',
+      description: 'Presenteie o paizão com os melhores produtos! Kits especiais até 40% OFF',
+      image: 'https://images.unsplash.com/photo-1473172707857-f9e276582ab6?w=1920&q=80',
+      active: false,
+    },
+    {
+      id: 'lancamento-colecao',
+      title: '✨ Nova Coleção 2025',
+      subtitle: 'Armazém Skate Shop',
+      description: 'Confira os lançamentos da temporada! Estilo e performance para você',
+      image: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=1920&q=80',
+      active: false,
+    },
+    {
+      id: 'padrao',
+      title: 'Onde o asfalto encontra a onda',
+      subtitle: '',
+      description: 'As melhores marcas de surf e skate em um só lugar',
+      image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=1920&q=80',
+      active: false,
+    },
+  ];
+
+  // Pegar campanha ativa (ou usar padrão)
+  const activeCampaign = campaigns.find(c => c.active) || campaigns[campaigns.length - 1];
+
   return (
     <div className="w-full overflow-x-hidden">
       <SEO 
@@ -19,8 +82,8 @@ const Home = () => {
       <section className="relative h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=1920&q=80"
-            alt="Surf Hero"
+            src={activeCampaign.image}
+            alt={activeCampaign.title}
             className="w-full h-full object-cover"
             loading="eager"
             fetchpriority="high"
@@ -29,11 +92,18 @@ const Home = () => {
         </div>
         <div className="relative container mx-auto px-4 text-white">
           <div className="max-w-2xl animate-slide-in-up">
+            {activeCampaign.subtitle && (
+              <div className="mb-2 flex items-center gap-2">
+                <span className="px-3 py-1 bg-white/20 backdrop-blur-sm rounded-full text-sm font-semibold">
+                  {activeCampaign.subtitle}
+                </span>
+              </div>
+            )}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-heading font-bold mb-4">
-              Onde o asfalto encontra a onda
+              {activeCampaign.title}
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl mb-6 sm:mb-8 text-gray-100">
-              As melhores marcas de surf e skate em um só lugar
+              {activeCampaign.description}
             </p>
             <div className="flex flex-wrap gap-4">
               <Link to="/produtos" className="btn-primary">
@@ -160,15 +230,15 @@ const Home = () => {
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                   />
                 </div>
-                <div className="p-6">
-                  <div className="text-sm text-gray-500 mb-2">
+                <div className="p-5 sm:p-6">
+                  <div className="text-sm text-gray-500 mb-3">
                     {new Date(post.date).toLocaleDateString('pt-BR')} • {post.author}
                   </div>
-                  <h3 className="text-lg sm:text-xl font-heading font-bold text-gray-900 mb-2 group-hover:text-dark-600 transition-colors">
+                  <h3 className="text-lg sm:text-xl font-heading font-bold text-gray-900 mb-3 group-hover:text-dark-600 transition-colors">
                     {post.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-gray-600 mb-4">{post.excerpt}</p>
-                  <span className="text-dark-600 font-semibold inline-flex items-center gap-1">
+                  <p className="text-sm sm:text-base text-gray-600 mb-4 leading-relaxed">{post.excerpt}</p>
+                  <span className="text-dark-600 font-semibold inline-flex items-center gap-1 text-sm sm:text-base">
                     Ler mais <ArrowRight className="w-4 h-4" />
                   </span>
                 </div>
