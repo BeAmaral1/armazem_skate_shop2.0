@@ -540,29 +540,117 @@ export const categories = ['Todos', 'Surf', 'Skate', 'Vestuário', 'Acessórios'
 
 export const brands = ['Todos', 'Armazem', 'Ocean Soul', 'Street Surf Co.', 'Wave Vision', 'Independent', 'Spitfire', 'Wave Gear', 'Eco Surf'];
 
-export const blogPosts = [
+// SISTEMA DE DROPS/COLEÇÕES
+export const drops = [
   {
     id: 1,
-    title: 'As Melhores Praias para Surfar no Brasil',
-    excerpt: 'Descubra os spots mais incríveis para pegar ondas pelo litoral brasileiro.',
-    image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
-    date: '2024-01-15',
-    author: 'Lucas Wave'
+    dropNumber: '01',
+    title: 'Ocean Soul',
+    subtitle: 'Premium Surf Collection',
+    description: 'Pranchas artesanais de alta performance para surfistas que buscam qualidade e estilo.',
+    image: '/logo_1.jpg',
+    brand: 'Ocean Soul',
+    releaseDate: '05/11/2024',
+    category: 'Surf',
+    itemCount: 2,
+    startPrice: 2500.00,
+    status: 'Disponível', // Disponível, Em Breve, Esgotado
+    featured: true,
+    relatedProducts: [1, 5], // IDs dos produtos desta coleção
+    colorTheme: 'blue', // Para o badge
+    slug: 'ocean-soul-premium-surf'
   },
   {
     id: 2,
-    title: 'Como Escolher seu Primeiro Skate',
-    excerpt: 'Guia completo para iniciantes: shape, trucks, rodas e mais.',
-    image: 'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
-    date: '2024-01-12',
-    author: 'Pedro Street'
+    dropNumber: '02',
+    title: 'Independent',
+    subtitle: 'Stage 11 Series',
+    description: 'Os trucks mais confiáveis do mundo. Performance profissional para skatistas exigentes.',
+    image: '/logo_2.jpg',
+    brand: 'Independent',
+    releaseDate: '03/11/2024',
+    category: 'Skate',
+    itemCount: 1,
+    startPrice: 450.00,
+    status: 'Disponível',
+    featured: true,
+    relatedProducts: [6],
+    colorTheme: 'orange',
+    slug: 'independent-stage-11'
   },
   {
     id: 3,
-    title: 'Sustentabilidade no Surf: Como Fazer a Diferença',
-    excerpt: 'Práticas eco-friendly para surfistas conscientes.',
-    image: 'https://images.unsplash.com/photo-1502933691298-84fc14542831?w=800&q=80',
-    date: '2024-01-08',
-    author: 'Marina Eco'
+    dropNumber: '03',
+    title: 'Wave Vision',
+    subtitle: 'Summer Shades',
+    description: 'Óculos polarizados premium para surf e lifestyle. Proteção UV400 e design exclusivo.',
+    image: '/logo_3.jpg',
+    brand: 'Wave Vision',
+    releaseDate: '01/11/2024',
+    category: 'Acessórios',
+    itemCount: 1,
+    startPrice: 280.00,
+    status: 'Disponível',
+    featured: true,
+    relatedProducts: [4],
+    colorTheme: 'green',
+    slug: 'wave-vision-summer'
+  },
+  {
+    id: 4,
+    dropNumber: '04',
+    title: 'Armazém',
+    subtitle: 'Salty Air Collection',
+    description: 'Vestuário sustentável com algodão orgânico. Estilo autêntico para surfistas e skatistas.',
+    image: '/logo_4.jpg',
+    brand: 'Armazem',
+    releaseDate: '30/10/2024',
+    category: 'Vestuário',
+    itemCount: 1,
+    startPrice: 120.00,
+    status: 'Esgotado', // Produto fora de estoque
+    featured: false,
+    relatedProducts: [3],
+    colorTheme: 'purple',
+    slug: 'armazem-salty-air'
+  },
+  {
+    id: 5,
+    dropNumber: '05',
+    title: 'Street Surf Co.',
+    subtitle: 'Urban Wave Series',
+    description: 'Shapes profissionais de maple canadense. Durabilidade e pop excepcional para street.',
+    image: '/logo_5.jpg',
+    brand: 'Street Surf Co.',
+    releaseDate: '28/10/2024',
+    category: 'Skate',
+    itemCount: 1,
+    startPrice: 350.00,
+    status: 'Últimas Unidades', // Estoque baixo
+    featured: false,
+    relatedProducts: [2],
+    colorTheme: 'orange',
+    slug: 'street-surf-urban-wave'
+  },
+  {
+    id: 6,
+    dropNumber: '06',
+    title: 'Verão 2024',
+    subtitle: 'Coming Soon',
+    description: 'Nova coleção de verão chegando em breve. Pranchas, shapes e vestuário exclusivos.',
+    image: '/logo_1.jpg',
+    brand: 'Armazem',
+    releaseDate: '15/12/2024',
+    category: 'Todos',
+    itemCount: 8,
+    startPrice: 99.00,
+    status: 'Em Breve',
+    featured: false,
+    relatedProducts: [],
+    colorTheme: 'blue',
+    slug: 'verao-2024'
   }
 ];
+
+// Manter blogPosts para uso futuro (caso queira blog também)
+export const blogPosts = [];
