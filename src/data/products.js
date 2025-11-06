@@ -68,8 +68,8 @@ export const products = [
     sizes: ['P', 'M', 'G', 'GG'],
     colors: ['Branco', 'Preto', 'Azul Marinho', 'Areia'],
     brand: 'Armazem',
-    inStock: true,
-    featured: true,
+    inStock: false,  // Corrigido: produto está fora de estoque
+    featured: false,  // Removido destaque pois está esgotado
     rating: 4.7,
     reviews: [
       { id: 1, author: 'Ana Paula', rating: 5, comment: 'Tecido muito macio e confortável!', date: '2024-01-22' },
@@ -108,6 +108,7 @@ export const products = [
     category: 'Surf',
     price: 3200.00,
     oldPrice: 3800.00,
+    stock: 8,
     image: 'https://images.unsplash.com/photo-1502933691298-84fc14542831?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1502933691298-84fc14542831?w=800&q=80',
@@ -131,6 +132,7 @@ export const products = [
     category: 'Skate',
     price: 450.00,
     oldPrice: 550.00,
+    stock: 12,
     image: 'https://images.unsplash.com/photo-1564982752979-3f7bc974c9a5?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1564982752979-3f7bc974c9a5?w=800&q=80',
@@ -154,6 +156,7 @@ export const products = [
     category: 'Vestuário',
     price: 280.00,
     oldPrice: 350.00,
+    stock: 18,
     image: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=800&q=80',
@@ -177,6 +180,7 @@ export const products = [
     category: 'Acessórios',
     price: 320.00,
     oldPrice: 400.00,
+    stock: 10,
     image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=800&q=80',
@@ -200,6 +204,7 @@ export const products = [
     category: 'Skate',
     price: 280.00,
     oldPrice: 320.00,
+    stock: 20,
     image: 'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
@@ -223,6 +228,7 @@ export const products = [
     category: 'Vestuário',
     price: 180.00,
     oldPrice: 220.00,
+    stock: 15,
     image: 'https://images.unsplash.com/photo-1519235624215-85175d5e4249?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1519235624215-85175d5e4249?w=800&q=80',
@@ -246,6 +252,7 @@ export const products = [
     category: 'Acessórios',
     price: 25.00,
     oldPrice: null,
+    stock: 50,
     image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
@@ -267,6 +274,7 @@ export const products = [
     category: 'Acessórios',
     price: 85.00,
     oldPrice: 110.00,
+    stock: 22,
     image: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=800&q=80',
@@ -288,6 +296,7 @@ export const products = [
     category: 'Surf',
     price: 3200.00,
     oldPrice: null,
+    stock: 6,
     image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
@@ -309,6 +318,7 @@ export const products = [
     category: 'Skate',
     price: 320.00,
     oldPrice: 400.00,
+    stock: 14,
     image: 'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
@@ -330,6 +340,7 @@ export const products = [
     category: 'Vestuário',
     price: 89.00,
     oldPrice: 120.00,
+    stock: 30,
     image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
@@ -351,6 +362,7 @@ export const products = [
     category: 'Acessórios',
     price: 280.00,
     oldPrice: null,
+    stock: 8,
     image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
@@ -372,6 +384,7 @@ export const products = [
     category: 'Surf',
     price: 2800.00,
     oldPrice: 3200.00,
+    stock: 5,
     image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
@@ -393,6 +406,7 @@ export const products = [
     category: 'Skate',
     price: 450.00,
     oldPrice: null,
+    stock: 9,
     image: 'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
@@ -414,6 +428,7 @@ export const products = [
     category: 'Vestuário',
     price: 280.00,
     oldPrice: 350.00,
+    stock: 12,
     image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
@@ -435,6 +450,7 @@ export const products = [
     category: 'Acessórios',
     price: 220.00,
     oldPrice: 280.00,
+    stock: 18,
     image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
@@ -456,6 +472,7 @@ export const products = [
     category: 'Vestuário',
     price: 280.00,
     oldPrice: null,
+    stock: 16,
     image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
@@ -477,6 +494,7 @@ export const products = [
     category: 'Skate',
     price: 580.00,
     oldPrice: 680.00,
+    stock: 4,
     image: 'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
@@ -498,6 +516,7 @@ export const products = [
     category: 'Acessórios',
     price: 120.00,
     oldPrice: null,
+    stock: 25,
     image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
@@ -519,6 +538,7 @@ export const products = [
     category: 'Vestuário',
     price: 220.00,
     oldPrice: 280.00,
+    stock: 20,
     image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
