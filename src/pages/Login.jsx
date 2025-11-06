@@ -487,11 +487,11 @@ const Login = () => {
 
                 <p className="text-xs text-gray-500 text-center mt-4">
                   Ao se cadastrar, você concorda com nossos{' '}
-                  <Link to="/termos" className="text-dark-700 hover:text-dark-900 font-medium">
+                  <Link to="/termos-uso" className="text-dark-700 hover:text-dark-900 font-medium">
                     Termos de Uso
                   </Link>{' '}
                   e{' '}
-                  <Link to="/privacidade" className="text-dark-700 hover:text-dark-900 font-medium">
+                  <Link to="/politica-privacidade" className="text-dark-700 hover:text-dark-900 font-medium">
                     Política de Privacidade
                   </Link>
                 </p>

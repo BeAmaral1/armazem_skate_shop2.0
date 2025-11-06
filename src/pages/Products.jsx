@@ -23,20 +23,49 @@ const Products = () => {
   });
   
   const [sortBy, setSortBy] = useState('featured');
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeSubCategory, setActiveSubCategory] = useState(null);
 
-  // Handle initial category from URL
+  // Handle initial category and subcategory from URL
   useEffect(() => {
     const categoria = searchParams.get('categoria');
+    const subcategoria = searchParams.get('sub');
+    
     if (categoria) {
-      setFilters(prev => ({
-        ...prev,
-        categories: [categoria]
-      }));
+      setActiveCategory(categoria);
     }
-  }, []);
+    if (subcategoria) {
+      setActiveSubCategory(subcategoria);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     let result = [...products];
+
+    // Filter by URL category (categoria principal)
+    if (activeCategory) {
+      const categoryMap = {
+        'acessorios': 'Acessórios',
+        'roupas': 'Vestuário',
+        'tenis': 'Calçados'
+      };
+      const mappedCategory = categoryMap[activeCategory] || activeCategory;
+      result = result.filter(p => 
+        p.category.toLowerCase() === mappedCategory.toLowerCase()
+      );
+    }
+
+    // Filter by URL subcategory (subcategoria)
+    if (activeSubCategory && activeCategory) {
+      // Filtrar por subcategoria se o produto tiver esse campo
+      result = result.filter(p => {
+        if (p.subcategory) {
+          return p.subcategory.toLowerCase() === activeSubCategory.toLowerCase();
+        }
+        // Se não tiver subcategoria, manter todos da categoria
+        return true;
+      });
+    }
 
     // Filter by search term
     const searchTerm = searchParams.get('busca');
@@ -55,8 +84,8 @@ const Products = () => {
       p.price >= filters.price.min && p.price <= filters.price.max
     );
 
-    // Filter by categories
-    if (filters.categories.length > 0) {
+    // Filter by categories (sidebar filters)
+    if (filters.categories.length > 0 && !activeCategory) {
       result = result.filter(p => filters.categories.includes(p.category));
     }
 
@@ -142,24 +171,75 @@ const Products = () => {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="mb-8">
+          {/* Breadcrumb de Categoria */}
+          {(activeCategory || activeSubCategory) && (
+            <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+              <a href="/produtos" className="hover:text-dark-900 transition-colors">
+                Todos os Produtos
+              </a>
+              {activeCategory && (
+                <>
+                  <span>›</span>
+                  <span className="font-medium text-dark-900 capitalize">
+                    {activeCategory}
+                  </span>
+                </>
+              )}
+              {activeSubCategory && (
+                <>
+                  <span>›</span>
+                  <span className="font-medium text-dark-900 capitalize">
+                    {activeSubCategory.replace('-', ' ')}
+                  </span>
+                </>
+              )}
+            </div>
+          )}
+          
           <h1 className="text-4xl font-heading font-bold text-gray-900 mb-2">
-            Produtos
+            {activeCategory ? (
+              <span className="capitalize">{activeCategory}</span>
+            ) : activeSearch ? (
+              <>Resultados para "{activeSearch}"</>
+            ) : (
+              'Produtos'
+            )}
+            {activeSubCategory && (
+              <span className="text-2xl text-gray-600 ml-2 capitalize">
+                › {activeSubCategory.replace('-', ' ')}
+              </span>
+            )}
           </h1>
-          {activeSearch && (
-            <div className="flex items-center gap-2 mb-3">
-              <span className="text-sm text-gray-600">Buscando por:</span>
-              <div className="inline-flex items-center gap-2 bg-gray-100 text-dark-800 px-3 py-1 rounded-full">
-                <span className="font-medium">"{activeSearch}"</span>
+          
+          {/* Filtros Ativos */}
+          <div className="flex flex-wrap items-center gap-2 mb-3">
+            {activeSearch && (
+              <div className="inline-flex items-center gap-2 bg-gray-100 text-dark-800 px-3 py-1.5 rounded-full">
+                <span className="text-sm">Busca: <span className="font-medium">"{activeSearch}"</span></span>
                 <button
                   onClick={clearSearch}
                   className="hover:bg-gray-200 rounded-full p-0.5 transition-colors"
                   title="Limpar busca"
                 >
-                  <X className="w-4 h-4" />
+                  <X className="w-3 h-3" />
                 </button>
               </div>
-            </div>
-          )}
+            )}
+            {(activeCategory || activeSubCategory) && (
+              <button
+                onClick={() => {
+                  setActiveCategory(null);
+                  setActiveSubCategory(null);
+                  setSearchParams({});
+                }}
+                className="inline-flex items-center gap-2 bg-dark-900 text-white px-3 py-1.5 rounded-full hover:bg-dark-700 transition-colors"
+              >
+                <span className="text-sm font-medium">Limpar Filtro de Categoria</span>
+                <X className="w-3 h-3" />
+              </button>
+            )}
+          </div>
+          
           <p className="text-gray-600">
             {filteredProducts.length} produto{filteredProducts.length !== 1 ? 's' : ''} encontrado{filteredProducts.length !== 1 ? 's' : ''}
           </p>

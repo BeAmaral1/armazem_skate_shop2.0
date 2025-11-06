@@ -5,6 +5,7 @@ export const products = [
     category: 'Surf',
     price: 2500.00,
     oldPrice: 3000.00,
+    stock: 15,  // Em estoque
     image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=800&q=80',
@@ -30,6 +31,7 @@ export const products = [
     category: 'Skate',
     price: 350.00,
     oldPrice: 450.00,
+    stock: 3,  // Estoque baixo
     image: 'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=800&q=80',
@@ -55,6 +57,7 @@ export const products = [
     category: 'Vestuário',
     price: 120.00,
     oldPrice: 150.00,
+    stock: 0,  // Fora de estoque - Mostrará botão WhatsApp
     image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80',
@@ -80,6 +83,7 @@ export const products = [
     category: 'Acessórios',
     price: 280.00,
     oldPrice: 350.00,
+    stock: 25,  // Em estoque
     image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',
     images: [
       'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&q=80',

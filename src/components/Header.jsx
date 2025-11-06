@@ -10,6 +10,8 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [openSubCategory, setOpenSubCategory] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [dropdownPosition, setDropdownPosition] = useState({ top: 0, right: 0 });
   const { getCartCount } = useCart();
@@ -21,8 +23,11 @@ const Header = () => {
   const wishlistCount = getWishlistCount();
   const userMenuRef = useRef(null);
   const userButtonRef = useRef(null);
+  const categoriesMenuRef = useRef(null);
+  const categoriesButtonRef = useRef(null);
+  const [categoriesDropdownPosition, setCategoriesDropdownPosition] = useState({ top: 0, left: 0 });
 
-  // Calcular posição do dropdown
+  // Calcular posição do dropdown de usuário
   useEffect(() => {
     if (isUserMenuOpen && userButtonRef.current) {
       const rect = userButtonRef.current.getBoundingClientRect();
@@ -33,19 +38,35 @@ const Header = () => {
     }
   }, [isUserMenuOpen]);
 
+  // Calcular posição do dropdown de categorias
+  useEffect(() => {
+    if (isCategoriesOpen && categoriesButtonRef.current) {
+      const rect = categoriesButtonRef.current.getBoundingClientRect();
+      setCategoriesDropdownPosition({
+        top: rect.bottom + 8,
+        left: rect.left
+      });
+    }
+  }, [isCategoriesOpen]);
+
   // Fechar menu ao clicar fora
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target)) {
         setIsUserMenuOpen(false);
       }
+      if (categoriesMenuRef.current && !categoriesMenuRef.current.contains(event.target) &&
+          categoriesButtonRef.current && !categoriesButtonRef.current.contains(event.target)) {
+        setIsCategoriesOpen(false);
+        setOpenSubCategory(null);
+      }
     };
 
-    if (isUserMenuOpen) {
+    if (isUserMenuOpen || isCategoriesOpen) {
       document.addEventListener('mousedown', handleClickOutside);
       return () => document.removeEventListener('mousedown', handleClickOutside);
     }
-  }, [isUserMenuOpen]);
+  }, [isUserMenuOpen, isCategoriesOpen]);
 
   const handleLogout = () => {
     logout();
@@ -62,6 +83,39 @@ const Header = () => {
     { name: 'Contato', path: '/contato' }
   ];
 
+  // Estrutura de Categorias e Subcategorias
+  const categories = [
+    {
+      name: 'Acessórios',
+      path: '/produtos?categoria=acessorios',
+      subcategories: [
+        { name: 'Óculos', path: '/produtos?categoria=acessorios&sub=oculos' },
+        { name: 'Tocas', path: '/produtos?categoria=acessorios&sub=tocas' },
+        { name: 'Relógios', path: '/produtos?categoria=acessorios&sub=relogios' },
+        { name: 'Correntes', path: '/produtos?categoria=acessorios&sub=correntes' },
+        { name: 'Bonés', path: '/produtos?categoria=acessorios&sub=bones' }
+      ]
+    },
+    {
+      name: 'Roupas',
+      path: '/produtos?categoria=roupas',
+      subcategories: [
+        { name: 'Camisetas', path: '/produtos?categoria=roupas&sub=camisetas' },
+        { name: 'Camisa Longa', path: '/produtos?categoria=roupas&sub=camisa-longa' },
+        { name: 'Moletons', path: '/produtos?categoria=roupas&sub=moletons' },
+        { name: 'Regatas', path: '/produtos?categoria=roupas&sub=regatas' }
+      ]
+    },
+    {
+      name: 'Tênis',
+      path: '/produtos?categoria=tenis',
+      subcategories: [
+        { name: 'Confecção Masculina', path: '/produtos?categoria=tenis&sub=masculino' },
+        { name: 'Confecção Feminina', path: '/produtos?categoria=tenis&sub=feminino' }
+      ]
+    }
+  ];
+
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchTerm.trim()) {
@@ -72,7 +126,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50">
+    <header className="bg-white shadow-md sticky top-0 z-[60]">
       {/* Top bar */}
       <div className="bg-dark-950 text-white py-2 px-4 text-xs sm:text-sm text-center">
         <p className="hidden sm:block">Frete grátis para compras acima de R$ 299 | Parcele em até 10x sem juros</p>
@@ -114,7 +168,113 @@ const Header = () => {
                 {link.name}
               </Link>
             ))}
+            
+            {/* Dropdown Categorias */}
+            <div className="relative" ref={categoriesMenuRef}>
+              <button
+                ref={categoriesButtonRef}
+                onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
+                className="flex items-center gap-1 font-medium text-gray-700 hover:text-dark-900 transition-colors"
+              >
+                Categorias
+                <ChevronDown className={`w-4 h-4 transition-transform ${
+                  isCategoriesOpen ? 'rotate-180' : ''
+                }`} />
+              </button>
+              
+            </div>
           </nav>
+
+          {/* Mega Menu Dropdown - Fora do nav para não ser cortado */}
+          {isCategoriesOpen && (
+            <>
+              {/* Overlay transparente */}
+              <div 
+                className="fixed inset-0 z-[90] bg-transparent"
+                onClick={() => {
+                  setIsCategoriesOpen(false);
+                  setOpenSubCategory(null);
+                }}
+              />
+              
+              {/* Dropdown */}
+              <div 
+                className="fixed w-72 bg-white rounded-lg shadow-2xl border border-gray-200 overflow-hidden z-[100] animate-fadeIn"
+                style={{
+                  top: `${categoriesDropdownPosition.top}px`,
+                  left: `${categoriesDropdownPosition.left}px`
+                }}
+                ref={categoriesMenuRef}
+              >
+                  <div className="p-2">
+                    {categories.map((category, index) => (
+                      <div key={category.name} className="relative">
+                        {/* Categoria Principal */}
+                        <button
+                          onClick={() => {
+                            if (openSubCategory === index) {
+                              setOpenSubCategory(null);
+                            } else {
+                              setOpenSubCategory(index);
+                            }
+                          }}
+                          className="w-full flex items-center justify-between px-4 py-3 text-left font-semibold text-gray-900 hover:bg-gray-50 rounded-lg transition-colors group"
+                        >
+                          <span className="group-hover:text-dark-900">{category.name}</span>
+                          <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${
+                            openSubCategory === index ? 'rotate-180' : ''
+                          }`} />
+                        </button>
+                        
+                        {/* Subcategorias */}
+                        {openSubCategory === index && (
+                          <div className="ml-4 pl-4 border-l-2 border-gray-200 space-y-1 animate-slideDown">
+                            <Link
+                              to={category.path}
+                              onClick={() => {
+                                setIsCategoriesOpen(false);
+                                setOpenSubCategory(null);
+                              }}
+                              className="block px-4 py-2 text-sm text-dark-900 font-medium hover:bg-dark-50 rounded-lg transition-colors"
+                            >
+                              Ver Todos
+                            </Link>
+                            {category.subcategories.map(sub => (
+                              <Link
+                                key={sub.name}
+                                to={sub.path}
+                                onClick={() => {
+                                  setIsCategoriesOpen(false);
+                                  setOpenSubCategory(null);
+                                }}
+                                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-dark-900 rounded-lg transition-colors"
+                              >
+                                {sub.name}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Footer do Mega Menu */}
+                  <div className="bg-gray-50 px-4 py-3 border-t border-gray-200">
+                    <Link
+                      to="/produtos"
+                      onClick={() => {
+                        setIsCategoriesOpen(false);
+                        setOpenSubCategory(null);
+                      }}
+                      className="text-sm font-semibold text-dark-900 hover:text-dark-700 flex items-center gap-1"
+                    >
+                      Ver Todos os Produtos
+                      <ChevronDown className="w-4 h-4 -rotate-90" />
+                    </Link>
+                  </div>
+              </div>
+            </>
+          )}
 
           {/* Right Icons */}
           <div className="flex items-center space-x-2 sm:space-x-4">
@@ -282,7 +442,7 @@ const Header = () => {
         {/* Mobile Navigation */}
         {isMenuOpen && (
           <nav className="md:hidden mt-4 pb-4 border-t pt-4">
-            <div className="flex flex-col space-y-3">
+            <div className="flex flex-col space-y-2">
               {navLinks.map(link => (
                 <Link
                   key={link.path}
@@ -297,6 +457,62 @@ const Header = () => {
                   {link.name}
                 </Link>
               ))}
+              
+              {/* Categorias Mobile */}
+              <div className="border-t pt-3 mt-3">
+                <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                  Categorias
+                </div>
+                {categories.map((category, index) => (
+                  <div key={category.name} className="mb-2">
+                    {/* Categoria Principal */}
+                    <button
+                      onClick={() => {
+                        if (openSubCategory === index) {
+                          setOpenSubCategory(null);
+                        } else {
+                          setOpenSubCategory(index);
+                        }
+                      }}
+                      className="w-full flex items-center justify-between px-4 py-2 text-left font-semibold text-gray-900 hover:bg-gray-50 rounded transition-colors"
+                    >
+                      <span>{category.name}</span>
+                      <ChevronDown className={`w-4 h-4 text-gray-500 transition-transform ${
+                        openSubCategory === index ? 'rotate-180' : ''
+                      }`} />
+                    </button>
+                    
+                    {/* Subcategorias */}
+                    {openSubCategory === index && (
+                      <div className="ml-6 mt-1 space-y-1 animate-slideDown">
+                        <Link
+                          to={category.path}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                            setOpenSubCategory(null);
+                          }}
+                          className="block px-4 py-2 text-sm text-dark-900 font-medium hover:bg-dark-50 rounded transition-colors"
+                        >
+                          Ver Todos
+                        </Link>
+                        {category.subcategories.map(sub => (
+                          <Link
+                            key={sub.name}
+                            to={sub.path}
+                            onClick={() => {
+                              setIsMenuOpen(false);
+                              setOpenSubCategory(null);
+                            }}
+                            className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 rounded transition-colors"
+                          >
+                            {sub.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           </nav>
         )}

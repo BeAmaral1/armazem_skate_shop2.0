@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Star, Check, ArrowLeft, Heart, Share2, RotateCw, Grid3x3 } from 'lucide-react';
+import { ShoppingCart, Star, Check, ArrowLeft, Heart, Share2, RotateCw, Grid3x3, MessageCircle, AlertTriangle } from 'lucide-react';
 import { products } from '../data/products';
 import { useCart } from '../context/CartContext';
 import { useRecentlyViewed } from '../context/RecentlyViewedContext';
@@ -25,6 +25,10 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [view360, setView360] = useState(false);
+  
+  // Verificar estoque
+  const isOutOfStock = product?.stock === 0;
+  const isLowStock = product?.stock > 0 && product?.stock <= 5;
   
   // Verificar se produto tem visualização 360°
   const has360 = product ? has360View(product.id) : false;
@@ -281,28 +285,68 @@ const ProductDetail = () => {
                 </div>
               </div>
 
-              {/* Add to Cart Button */}
+              {/* Alertas de Estoque */}
+              {isOutOfStock && (
+                <div className="mb-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-lg">
+                  <div className="flex items-center gap-2 text-red-700">
+                    <AlertTriangle className="w-5 h-5" />
+                    <span className="font-semibold">Produto Fora de Estoque</span>
+                  </div>
+                  <p className="text-sm text-red-600 mt-1">
+                    Este produto está temporariamente indisponível. Entre em contato conosco para consultar previsão de reposição.
+                  </p>
+                </div>
+              )}
+
+              {isLowStock && !isOutOfStock && (
+                <div className="mb-4 p-4 bg-orange-50 border-l-4 border-orange-500 rounded-lg">
+                  <div className="flex items-center gap-2 text-orange-700">
+                    <AlertTriangle className="w-5 h-5" />
+                    <span className="font-semibold">Últimas Unidades!</span>
+                  </div>
+                  <p className="text-sm text-orange-600 mt-1">
+                    Apenas {product.stock} {product.stock === 1 ? 'unidade disponível' : 'unidades disponíveis'} em estoque.
+                  </p>
+                </div>
+              )}
+
+              {/* Add to Cart Button ou WhatsApp Button */}
               <div className="space-y-3">
-                <button
-                  onClick={handleAddToCart}
-                  className={`w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
-                    addedToCart
-                      ? 'bg-dark-700 hover:bg-dark-800 text-white'
-                      : 'bg-dark-600 hover:bg-dark-700 text-white'
-                  }`}
-                >
-                  {addedToCart ? (
-                    <>
-                      <Check className="w-6 h-6" />
-                      Adicionado ao Carrinho!
-                    </>
-                  ) : (
-                    <>
-                      <ShoppingCart className="w-6 h-6" />
-                      Adicionar ao Carrinho
-                    </>
-                  )}
-                </button>
+                {isOutOfStock ? (
+                  <a
+                    href={`https://wa.me/5511987654321?text=${encodeURIComponent(
+                      `Olá! Gostaria de saber quando o produto "${product.name}" (ID: ${product.id}) estará disponível novamente.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white"
+                  >
+                    <MessageCircle className="w-6 h-6" />
+                    Consultar Disponibilidade no WhatsApp
+                  </a>
+                ) : (
+                  <button
+                    onClick={handleAddToCart}
+                    disabled={isOutOfStock}
+                    className={`w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+                      addedToCart
+                        ? 'bg-dark-700 hover:bg-dark-800 text-white'
+                        : 'bg-dark-600 hover:bg-dark-700 text-white'
+                    }`}
+                  >
+                    {addedToCart ? (
+                      <>
+                        <Check className="w-6 h-6" />
+                        Adicionado ao Carrinho!
+                      </>
+                    ) : (
+                      <>
+                        <ShoppingCart className="w-6 h-6" />
+                        Adicionar ao Carrinho
+                      </>
+                    )}
+                  </button>
+                )}
 
                 <div className="flex gap-2">
                   <div className="flex-1">
@@ -317,10 +361,22 @@ const ProductDetail = () => {
 
               {/* Info */}
               <div className="mt-6 pt-6 border-t space-y-2 text-sm">
-                <div className="flex items-center gap-2 text-dark-700">
-                  <Check className="w-5 h-5" />
-                  <span>Em estoque - Envio imediato</span>
-                </div>
+                {isOutOfStock ? (
+                  <div className="flex items-center gap-2 text-red-600">
+                    <AlertTriangle className="w-5 h-5" />
+                    <span className="font-semibold">Produto Fora de Estoque</span>
+                  </div>
+                ) : isLowStock ? (
+                  <div className="flex items-center gap-2 text-orange-600">
+                    <AlertTriangle className="w-5 h-5" />
+                    <span>Estoque Limitado - {product.stock} {product.stock === 1 ? 'unidade' : 'unidades'}</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2 text-dark-700">
+                    <Check className="w-5 h-5" />
+                    <span>Em estoque - Envio imediato</span>
+                  </div>
+                )}
                 <div className="flex items-center gap-2 text-gray-600">
                   <Check className="w-5 h-5" />
                   <span>Frete grátis acima de R$ 299</span>

@@ -17,6 +17,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
 import ReferralBanner from './components/ReferralBanner';
+import BackToTop from './components/BackToTop';
+import WhatsAppButton from './components/WhatsAppButton';
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -169,6 +171,10 @@ function App() {
                 </Suspense>
               </main>
               <Footer />
+              
+              {/* Botões Flutuantes */}
+              <BackToTop />
+              <WhatsAppButton />
             </div>
           </Router>
                     </CartProvider>

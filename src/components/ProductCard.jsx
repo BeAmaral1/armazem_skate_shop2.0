@@ -28,9 +28,17 @@ const ProductCard = ({ product }) => {
             -{discount}%
           </div>
         )}
-        {product.featured && (
+        {product.featured && product.stock > 0 && (
           <div className="absolute bottom-4 left-4 bg-dark-600 text-white px-3 py-1 rounded-full text-sm font-bold">
             Destaque
+          </div>
+        )}
+        {/* Badge Fora de Estoque */}
+        {product.stock === 0 && (
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
+            <div className="bg-red-600 text-white px-4 py-2 rounded-lg font-bold text-sm sm:text-base">
+              FORA DE ESTOQUE
+            </div>
           </div>
         )}
       </div>
@@ -79,13 +87,24 @@ const ProductCard = ({ product }) => {
           </span>
         </div>
 
+        {/* Estoque */}
+        {product.stock !== undefined && product.stock > 0 && product.stock <= 5 && (
+          <div className="mb-2 text-sm text-orange-600 font-medium">
+            ⚠️ Apenas {product.stock} {product.stock === 1 ? 'unidade disponível' : 'unidades disponíveis'}
+          </div>
+        )}
+
         {/* Button */}
         <Link
           to={`/produto/${product.id}`}
-          className="w-full bg-dark-600 hover:bg-dark-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 group-hover:shadow-lg"
+          className={`w-full font-semibold py-2 px-4 rounded-lg transition-all duration-300 flex items-center justify-center gap-2 ${
+            product.stock === 0
+              ? 'bg-gray-400 text-gray-700 cursor-default'
+              : 'bg-dark-600 hover:bg-dark-700 text-white group-hover:shadow-lg'
+          }`}
         >
           <ShoppingCart className="w-4 h-4" />
-          Ver Detalhes
+          {product.stock === 0 ? 'Indisponível' : 'Ver Detalhes'}
         </Link>
       </div>
     </div>

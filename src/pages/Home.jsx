@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, Waves, Wind, Shirt, Package } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
 import RecentlyViewedCarousel from '../components/RecentlyViewedCarousel';
+import FeaturedProductsCarousel from '../components/FeaturedProductsCarousel';
 import SEO from '../components/SEO';
 import { products, blogPosts } from '../data/products';
 
 const Home = () => {
-  const featuredProducts = products.filter(p => p.featured).slice(0, 4);
+  const featuredProducts = products.filter(p => p.featured).slice(0, 8);
 
   // Sistema de Campanhas Sazonais - Altere facilmente aqui!
   const campaigns = [
@@ -128,11 +129,10 @@ const Home = () => {
               Confira nossa seleção especial de produtos em destaque
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featuredProducts.map(product => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          
+          {/* Carrossel de Produtos em Destaque */}
+          <FeaturedProductsCarousel products={featuredProducts} />
+          
           <div className="text-center mt-10">
             <Link to="/produtos" className="btn-primary inline-flex items-center gap-2">
               Ver Todos os Produtos
