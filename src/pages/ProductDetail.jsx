@@ -77,6 +77,30 @@ const ProductDetail = () => {
     setTimeout(() => setAddedToCart(false), 3000);
   };
 
+  const handleShare = async () => {
+    const shareData = {
+      title: product.name,
+      text: `${product.name} - R$ ${product.price.toFixed(2)}`,
+      url: window.location.href,
+    };
+
+    try {
+      if (navigator.share) {
+        // Se o navegador suporta Web Share API (principalmente mobile)
+        await navigator.share(shareData);
+      } else {
+        // Fallback: copiar link para clipboard
+        await navigator.clipboard.writeText(window.location.href);
+        alert('Link copiado para a área de transferência!');
+      }
+    } catch (err) {
+      // Se o usuário cancelar ou der erro
+      if (err.name !== 'AbortError') {
+        console.error('Erro ao compartilhar:', err);
+      }
+    }
+  };
+
   return (
     <div className="bg-gray-50 min-h-screen py-4 sm:py-8">
       <SEO 
@@ -321,10 +345,10 @@ const ProductDetail = () => {
                     )}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-4 rounded-lg font-bold text-lg transition-all duration-300 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white"
+                    className="w-full py-3 sm:py-4 rounded-lg font-bold text-sm sm:text-lg transition-all duration-300 flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20BA5A] text-white"
                   >
-                    <MessageCircle className="w-6 h-6" />
-                    Consultar Disponibilidade no WhatsApp
+                    <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 flex-shrink-0" />
+                    <span className="truncate">Consultar Disponibilidade no WhatsApp</span>
                   </a>
                 ) : (
                   <button
@@ -354,9 +378,13 @@ const ProductDetail = () => {
                   <div className="flex-1">
                     <WishlistButton product={product} size="lg" showLabel={true} />
                   </div>
-                  <button className="flex-1 btn-outline flex items-center justify-center gap-2">
-                    <Share2 className="w-5 h-5" />
-                    <span className="hidden sm:inline">Compartilhar</span>
+                  <button 
+                    onClick={handleShare}
+                    className="flex-1 btn-outline flex items-center justify-center gap-1 sm:gap-2 px-2 sm:px-4"
+                    title="Compartilhar produto"
+                  >
+                    <Share2 className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
+                    <span className="hidden sm:inline text-sm sm:text-base">Compartilhar</span>
                   </button>
                 </div>
               </div>
