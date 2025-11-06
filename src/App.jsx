@@ -29,6 +29,8 @@ const Checkout = lazy(() => import('./pages/Checkout'));
 const About = lazy(() => import('./pages/About'));
 const Contact = lazy(() => import('./pages/Contact'));
 const Login = lazy(() => import('./pages/Login'));
+const ForgotPassword = lazy(() => import('./pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('./pages/ResetPassword'));
 const OrderConfirmed = lazy(() => import('./pages/OrderConfirmed'));
 const Wishlist = lazy(() => import('./pages/Wishlist'));
 const Profile = lazy(() => import('./pages/Profile'));
@@ -98,6 +100,8 @@ function App() {
                   <Route path="/termos-uso" element={<TermsOfService />} />
                   <Route path="/politica-privacidade" element={<PrivacyPolicy />} />
                   <Route path="/login" element={<Login />} />
+                  <Route path="/esqueceu-senha" element={<ForgotPassword />} />
+                  <Route path="/redefinir-senha/:token" element={<ResetPassword />} />
                   
                   {/* Rotas Protegidas */}
                   <Route path="/favoritos" element={

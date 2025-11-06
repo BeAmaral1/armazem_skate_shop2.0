@@ -292,7 +292,7 @@ const Login = () => {
                     />
                     <span className="ml-2 text-sm text-gray-700">Lembrar-me</span>
                   </label>
-                  <Link to="/recuperar-senha" className="text-sm text-dark-700 hover:text-dark-900 font-medium">
+                  <Link to="/esqueceu-senha" className="text-sm text-dark-700 hover:text-dark-900 font-medium">
                     Esqueci a senha
                   </Link>
                 </div>

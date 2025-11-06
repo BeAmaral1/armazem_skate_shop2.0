@@ -81,9 +81,11 @@ const ProductDetail = () => {
     <div className="bg-gray-50 min-h-screen py-4 sm:py-8">
       <SEO 
         title={product.name}
-        description={product.description}
-        image={product.images[0]}
+        description={product.description || `${product.name} - ${product.category}. ${product.inStock ? 'Em estoque' : 'Fora de estoque'}. ${product.brand ? `Marca: ${product.brand}` : ''}`}
+        image={product.images?.[0] || product.image || '/og-image.jpg'}
         type="product"
+        price={product.price}
+        product={product}
       />
       <div className="container mx-auto px-4">
         {/* Breadcrumb */}
