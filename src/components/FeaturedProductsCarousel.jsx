@@ -12,13 +12,13 @@ const FeaturedProductsCarousel = ({ products }) => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 640) {
-        setItemsPerView(1); // Mobile
+        setItemsPerView(1); // Mobile: 1 card
       } else if (window.innerWidth < 768) {
-        setItemsPerView(2); // Tablet pequeno
+        setItemsPerView(2); // Tablet pequeno: 2 cards
       } else if (window.innerWidth < 1024) {
-        setItemsPerView(3); // Tablet
+        setItemsPerView(3); // Tablet: 3 cards
       } else {
-        setItemsPerView(4); // Desktop
+        setItemsPerView(4); // Desktop: 4 cards
       }
     };
 
@@ -82,25 +82,25 @@ const FeaturedProductsCarousel = ({ products }) => {
         </div>
       </div>
 
-      {/* Botões de Navegação - Desktop */}
+      {/* Botões de Navegação - Visíveis em todos os tamanhos */}
       {products.length > itemsPerView && (
         <>
           <button
             onClick={goToPrevious}
-            className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white hover:bg-gray-50 text-dark-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-50 text-dark-900 p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={currentIndex === 0}
             aria-label="Anterior"
           >
-            <ChevronLeft className="w-6 h-6" />
+            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
 
           <button
             onClick={goToNext}
-            className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white hover:bg-gray-50 text-dark-900 p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-50 text-dark-900 p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
             disabled={currentIndex === maxIndex}
             aria-label="Próximo"
           >
-            <ChevronRight className="w-6 h-6" />
+            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
           </button>
         </>
       )}

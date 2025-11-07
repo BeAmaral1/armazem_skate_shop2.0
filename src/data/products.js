@@ -669,6 +669,42 @@ export const drops = [
     relatedProducts: [],
     colorTheme: 'blue',
     slug: 'verao-2024'
+  },
+  {
+    id: 7,
+    dropNumber: '07',
+    title: 'Spitfire',
+    subtitle: 'Formula Four Collection',
+    description: 'As rodas mais rápidas e duráveis do mercado. Performance inigualável para street e park.',
+    image: '/logo_2.jpg',
+    brand: 'Spitfire',
+    releaseDate: '20/10/2024',
+    category: 'Skate',
+    itemCount: 1,
+    startPrice: 280.00,
+    status: 'Disponível',
+    featured: false,
+    relatedProducts: [9],
+    colorTheme: 'orange',
+    slug: 'spitfire-formula-four'
+  },
+  {
+    id: 8,
+    dropNumber: '08',
+    title: 'Wave Gear',
+    subtitle: 'Adventure Pack',
+    description: 'Mochilas e acessórios impermeáveis para suas aventuras. Qualidade premium e design moderno.',
+    image: '/logo_3.jpg',
+    brand: 'Wave Gear',
+    releaseDate: '15/10/2024',
+    category: 'Acessórios',
+    itemCount: 2,
+    startPrice: 280.00,
+    status: 'Disponível',
+    featured: false,
+    relatedProducts: [8, 16],
+    colorTheme: 'green',
+    slug: 'wave-gear-adventure'
   }
 ];
 

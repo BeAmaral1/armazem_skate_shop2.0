@@ -170,3 +170,21 @@ main {
 ::-webkit-scrollbar-thumb:hover {
   background: #212529;
 }
+
+/* Carrossel de marcas infinito */
+@keyframes scrollBrands {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+.animate-scroll-brands {
+  animation: scrollBrands 30s linear infinite;
+}
+
+.animate-scroll-brands:hover {
+  animation-play-state: paused;
+}

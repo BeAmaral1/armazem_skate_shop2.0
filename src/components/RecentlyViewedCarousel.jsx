@@ -79,20 +79,20 @@ const RecentlyViewedCarousel = ({ limit = 6, showTitle = true, showControls = tr
         {/* Carousel */}
         <div className="relative group">
           {/* Left Arrow */}
-          {showControls && recentProducts.length > 3 && (
+          {showControls && recentProducts.length > 1 && (
             <button
               onClick={() => scroll('left')}
-              className="hidden md:flex absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-50"
+              className="flex absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center transition-all hover:bg-gray-50 hover:scale-110"
               aria-label="Anterior"
             >
-              <ChevronLeft className="w-6 h-6 text-gray-700" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
             </button>
           )}
 
           {/* Products Container */}
           <div
             ref={scrollContainerRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4"
+            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4 px-12 sm:px-0"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {recentProducts.map((product) => (
@@ -118,13 +118,13 @@ const RecentlyViewedCarousel = ({ limit = 6, showTitle = true, showControls = tr
           </div>
 
           {/* Right Arrow */}
-          {showControls && recentProducts.length > 3 && (
+          {showControls && recentProducts.length > 1 && (
             <button
               onClick={() => scroll('right')}
-              className="hidden md:flex absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-12 h-12 bg-white rounded-full shadow-lg items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity hover:bg-gray-50"
+              className="flex absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 sm:w-12 sm:h-12 bg-white rounded-full shadow-lg items-center justify-center transition-all hover:bg-gray-50 hover:scale-110"
               aria-label="Próximo"
             >
-              <ChevronRight className="w-6 h-6 text-gray-700" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700" />
             </button>
           )}
         </div>

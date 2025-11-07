@@ -16,16 +16,19 @@ const WhatsAppButton = () => {
       href={whatsappUrl}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-[#25D366] hover:bg-[#20BA5A] rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 group"
+      className="fixed bottom-4 right-4 md:bottom-6 md:right-6 z-50 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#25D366] hover:bg-[#20BA5A] rounded-full shadow-lg hover:shadow-2xl transition-all duration-300 hover:scale-105 group"
       aria-label="Fale conosco no WhatsApp"
       title="Fale conosco no WhatsApp"
     >
-      {/* Animação de pulso sutil */}
-      <span className="absolute inline-flex h-full w-full rounded-full bg-[#25D366] opacity-75 animate-ping"></span>
+      {/* Anel de pulso suave - apenas no desktop */}
+      <span className="absolute hidden md:inline-flex h-full w-full rounded-full bg-[#25D366] opacity-30 group-hover:opacity-50 transition-opacity duration-500"></span>
+      
+      {/* Animação de pulso suave - apenas hover no desktop */}
+      <span className="absolute hidden md:group-hover:inline-flex h-full w-full rounded-full bg-[#25D366] animate-ping opacity-20"></span>
       
       {/* Logo WhatsApp SVG */}
       <svg 
-        className="w-7 h-7 md:w-8 md:h-8 relative z-10" 
+        className="w-8 h-8 md:w-9 md:h-9 relative z-10 group-hover:scale-110 transition-transform" 
         viewBox="0 0 24 24" 
         fill="white"
         xmlns="http://www.w3.org/2000/svg"
