@@ -95,7 +95,7 @@ export const products = [
     colors: ['Preto Fosco', 'Tartaruga', 'Azul Espelhado'],
     brand: 'Wave Vision',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.6,
     reviews: [
       { id: 1, author: 'Roberto Dias', rating: 5, comment: 'Qualidade excepcional! Vale cada centavo.', date: '2024-01-21' },
@@ -120,7 +120,7 @@ export const products = [
     colors: ['Natural', 'Azul Vintage', 'Verde Água'],
     brand: 'Ocean Soul',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.9,
     reviews: [
       { id: 1, author: 'João Pedro', rating: 5, comment: 'Prancha dos sonhos! Perfeita para cross-stepping.', date: '2024-01-17' }
@@ -144,7 +144,7 @@ export const products = [
     colors: ['Prata', 'Preto', 'Raw'],
     brand: 'Independent',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 5.0,
     reviews: [
       { id: 1, author: 'Gustavo Lima', rating: 5, comment: 'Os melhores trucks do mercado!', date: '2024-01-13' }
@@ -192,7 +192,7 @@ export const products = [
     colors: ['Preto', 'Azul Ocean', 'Cinza'],
     brand: 'Wave Gear',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.7,
     reviews: [
       { id: 1, author: 'André Ferreira', rating: 5, comment: 'Muito útil! Realmente não entra água.', date: '2024-01-09' }
@@ -216,7 +216,7 @@ export const products = [
     colors: ['Branco', 'Verde', 'Vermelho'],
     brand: 'Spitfire',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.9,
     reviews: [
       { id: 1, author: 'Diego Martins', rating: 5, comment: 'Rodas incríveis! Muito rápidas.', date: '2024-01-08' }
@@ -240,7 +240,7 @@ export const products = [
     colors: ['Azul Tropical', 'Verde Folhagem', 'Laranja Sunset'],
     brand: 'Armazem',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.6,
     reviews: [
       { id: 1, author: 'Marcos Vieira', rating: 4, comment: 'Boa bermuda, mas o tecido é um pouco fino.', date: '2024-01-07' }
@@ -308,7 +308,7 @@ export const products = [
     colors: ['Azul Claro', 'Verde Água', 'Branco'],
     brand: 'Ocean Soul',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.7,
     reviews: []
   },
@@ -330,7 +330,7 @@ export const products = [
     colors: ['Preto', 'Natural', 'Vermelho'],
     brand: 'Street Surf Co.',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.8,
     reviews: []
   },
@@ -352,7 +352,7 @@ export const products = [
     colors: ['Preto', 'Branco', 'Azul Marinho'],
     brand: 'Armazem',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.5,
     reviews: []
   },
@@ -396,7 +396,7 @@ export const products = [
     colors: ['Branco', 'Preto', 'Amarelo'],
     brand: 'Wave Vision',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.9,
     reviews: []
   },
@@ -462,7 +462,7 @@ export const products = [
     colors: ['Preto/Fumê', 'Tartaruga/Verde', 'Azul/Espelhado'],
     brand: 'Wave Vision',
     inStock: true,
-    featured: false,
+    featured: true,
     rating: 4.5,
     reviews: []
   },

@@ -11,7 +11,7 @@ import useSwipe from '../hooks/useSwipe';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const featuredProducts = products.filter(p => p.featured).slice(0, 8);
+  const featuredProducts = products.filter(p => p.featured).slice(0, 15);
   
   // Hook de swipe para o hero carousel
   const heroSwipeRef = useSwipe(

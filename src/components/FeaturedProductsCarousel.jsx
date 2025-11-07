@@ -23,8 +23,12 @@ const FeaturedProductsCarousel = ({ products }) => {
         setItemsPerView(2); // Mobile: 2 cards
       } else if (window.innerWidth < 1024) {
         setItemsPerView(3); // Tablet: 3 cards
+      } else if (window.innerWidth < 1280) {
+        setItemsPerView(4); // Desktop médio: 4 cards
+      } else if (window.innerWidth < 1536) {
+        setItemsPerView(5); // Desktop grande: 5 cards
       } else {
-        setItemsPerView(4); // Desktop: 4 cards
+        setItemsPerView(6); // Desktop extra grande: 6 cards
       }
     };
 
