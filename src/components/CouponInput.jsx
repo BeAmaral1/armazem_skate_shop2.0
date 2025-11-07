@@ -147,7 +147,7 @@ const CouponInput = ({ cartTotal, onApply }) => {
                   )}
                   {appliedCoupon.type === 'shipping' && (
                     <p className="text-lg font-bold text-green-600">
-                      Frete Grátis Ativado! 🎉
+                      Frete Grátis Ativado!
                     </p>
                   )}
                 </div>

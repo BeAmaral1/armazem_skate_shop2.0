@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FileText, Shield, AlertCircle, CheckCircle, Mail } from 'lucide-react';
+import { FileText, Shield, AlertCircle, CheckCircle, Mail, Package, Zap } from 'lucide-react';
 
 const TermsOfService = () => {
   return (
@@ -169,11 +169,17 @@ const TermsOfService = () => {
               </p>
               <div className="grid sm:grid-cols-2 gap-4 mt-4">
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">📦 Frete Grátis</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                    <Package className="w-5 h-5 text-blue-600" />
+                    Frete Grátis
+                  </h4>
                   <p className="text-sm">Disponível para compras acima de R$ 299,00 para regiões selecionadas.</p>
                 </div>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <h4 className="font-semibold text-gray-900 mb-2">⚡ Entrega Expressa</h4>
+                  <h4 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                    <Zap className="w-5 h-5 text-yellow-600" />
+                    Entrega Expressa
+                  </h4>
                   <p className="text-sm">Opção disponível para capitais e regiões metropolitanas.</p>
                 </div>
               </div>

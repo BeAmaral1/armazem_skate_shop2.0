@@ -168,7 +168,7 @@ const NotificationDropdown = ({ isOpen, onClose }) => {
               {showAll ? 'Nenhuma notificação' : 'Nenhuma notificação não lida'}
             </p>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              Você está em dia! 🎉
+              Você está em dia!
             </p>
           </div>
         ) : (

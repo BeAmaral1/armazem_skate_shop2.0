@@ -10,7 +10,7 @@ import { products, drops } from '../data/products';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const featuredProducts = products.filter(p => p.featured).slice(0, 8);
+  const featuredProducts = products.filter(p => p.featured).slice(0, 3);
 
   // Sistema de Campanhas Sazonais - Altere facilmente aqui!
   const campaigns = [
@@ -24,7 +24,7 @@ const Home = () => {
     },
     {
       id: 'liquidacao-inverno',
-      title: '❄️ Liquidação de Inverno',
+      title: 'Liquidação de Inverno',
       subtitle: 'Armazém Skate Shop',
       description: 'Mega liquidação! Até 70% OFF em vestuário e acessórios de inverno',
       image: 'https://images.unsplash.com/photo-1564982752979-3f7bc974d29a?w=1920&q=80',
@@ -32,7 +32,7 @@ const Home = () => {
     },
     {
       id: 'black-friday',
-      title: '🔥 Black Friday Armazém',
+      title: 'Black Friday Armazém',
       subtitle: 'Surf & Skate',
       description: 'Os melhores preços do ano! Até 50% OFF em TUDO + Frete Grátis',
       image: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=1920&q=80',
@@ -40,7 +40,7 @@ const Home = () => {
     },
     {
       id: 'volta-as-aulas',
-      title: '🎒 Volta às Aulas',
+      title: 'Volta às Aulas',
       subtitle: 'Armazém Skate Shop',
       description: 'Começe o ano com estilo! 30% OFF em mochilas, ténis e skates',
       image: 'https://images.unsplash.com/photo-1564466809058-bf4114d55352?w=1920&q=80',
@@ -48,7 +48,7 @@ const Home = () => {
     },
     {
       id: 'dia-dos-pais',
-      title: '👨‍👦 Especial Dia dos Pais',
+      title: 'Especial Dia dos Pais',
       subtitle: 'Armazém Skate Shop',
       description: 'Presenteie o paizão com os melhores produtos! Kits especiais até 40% OFF',
       image: 'https://images.unsplash.com/photo-1473172707857-f9e276582ab6?w=1920&q=80',
@@ -56,7 +56,7 @@ const Home = () => {
     },
     {
       id: 'lancamento-colecao',
-      title: '✨ Nova Coleção 2025',
+      title: 'Nova Coleção 2025',
       subtitle: 'Armazém Skate Shop',
       description: 'Confira os lançamentos da temporada! Estilo e performance para você',
       image: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=1920&q=80',
@@ -299,7 +299,7 @@ const Home = () => {
               </span>
             </div>
             <h2 className="text-3xl sm:text-5xl font-heading font-bold mb-4">
-              Latest Drops
+              Drops da Loja
             </h2>
             <p className="text-gray-300 max-w-2xl mx-auto text-sm sm:text-base">
               Coleções exclusivas das melhores marcas. Estoque limitado.

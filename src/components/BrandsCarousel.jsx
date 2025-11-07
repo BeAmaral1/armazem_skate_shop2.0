@@ -1,15 +1,16 @@
 import React from 'react';
+import { Waves, Zap, Flame, Glasses, Backpack, Star, Leaf, Wind } from 'lucide-react';
 
 const BrandsCarousel = () => {
   const brands = [
-    { name: 'Ocean Soul', logo: '🌊' },
-    { name: 'Street Surf Co.', logo: '🛹' },
-    { name: 'Independent', logo: '⚡' },
-    { name: 'Spitfire', logo: '🔥' },
-    { name: 'Wave Vision', logo: '👓' },
-    { name: 'Wave Gear', logo: '🎒' },
-    { name: 'Armazém', logo: '⭐' },
-    { name: 'Eco Surf', logo: '🌿' },
+    { name: 'Ocean Soul', icon: Waves },
+    { name: 'Street Surf Co.', icon: Wind },
+    { name: 'Independent', icon: Zap },
+    { name: 'Spitfire', icon: Flame },
+    { name: 'Wave Vision', icon: Glasses },
+    { name: 'Wave Gear', icon: Backpack },
+    { name: 'Armazém', icon: Star },
+    { name: 'Eco Surf', icon: Leaf },
   ];
 
   // Duplicar para efeito infinito
@@ -33,22 +34,25 @@ const BrandsCarousel = () => {
 
         {/* Faixa de marcas */}
         <div className="flex animate-scroll-brands">
-          {duplicatedBrands.map((brand, index) => (
-            <div
-              key={`${brand.name}-${index}`}
-              className="flex-shrink-0 mx-4 sm:mx-8 flex flex-col items-center justify-center group"
-            >
-              {/* Logo (emoji ou poderia ser imagem) */}
-              <div className="text-3xl sm:text-4xl mb-2 group-hover:scale-110 transition-transform">
-                {brand.logo}
+          {duplicatedBrands.map((brand, index) => {
+            const Icon = brand.icon;
+            return (
+              <div
+                key={`${brand.name}-${index}`}
+                className="flex-shrink-0 mx-4 sm:mx-8 flex flex-col items-center justify-center group"
+              >
+                {/* Logo (ícone) */}
+                <div className="mb-2 group-hover:scale-110 transition-transform text-gray-700">
+                  <Icon className="w-8 h-8 sm:w-10 sm:h-10" />
+                </div>
+                
+                {/* Nome da marca */}
+                <span className="text-xs sm:text-sm font-semibold text-gray-700 whitespace-nowrap">
+                  {brand.name}
+                </span>
               </div>
-              
-              {/* Nome da marca */}
-              <span className="text-xs sm:text-sm font-semibold text-gray-700 whitespace-nowrap">
-                {brand.name}
-              </span>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

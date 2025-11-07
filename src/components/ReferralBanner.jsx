@@ -41,7 +41,7 @@ const ReferralBanner = () => {
         if (result.success) {
           setMessage({
             type: 'success',
-            text: '🎉 Cupom de 10% aplicado! Use o código ' + result.coupon.code,
+            text: 'Cupom de 10% aplicado! Use o código ' + result.coupon.code,
           });
           localStorage.setItem('referral_applied_' + user.id, 'true');
           sessionStorage.removeItem('pending_referral_code');
