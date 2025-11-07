@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, Eye, X, Trash2 } from 'lucide-react';
 import { useRecentlyViewed } from '../context/RecentlyViewedContext';
@@ -8,6 +8,9 @@ const RecentlyViewedCarousel = ({ limit = 6, showTitle = true, showControls = tr
   const { getRecent, getCount, removeProduct, clearAll } = useRecentlyViewed();
   const scrollContainerRef = useRef(null);
   const [showClearModal, setShowClearModal] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
   const recentProducts = getRecent(limit);
   const totalCount = getCount();
@@ -26,6 +29,70 @@ const RecentlyViewedCarousel = ({ limit = 6, showTitle = true, showControls = tr
       left: newPosition,
       behavior: 'smooth',
     });
+  };
+
+  // Handlers para arrastar com mouse/touch
+  const handleMouseDown = (e) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    
+    setIsDragging(true);
+    setStartX(e.pageX - container.offsetLeft);
+    setScrollLeft(container.scrollLeft);
+    container.style.cursor = 'grabbing';
+  };
+
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startX) * 2; // Multiplicador para velocidade de scroll
+    container.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.style.cursor = 'grab';
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      setIsDragging(false);
+      const container = scrollContainerRef.current;
+      if (container) {
+        container.style.cursor = 'grab';
+      }
+    }
+  };
+
+  // Handlers para touch (mobile)
+  const handleTouchStart = (e) => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - container.offsetLeft);
+    setScrollLeft(container.scrollLeft);
+  };
+
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    
+    const x = e.touches[0].pageX - container.offsetLeft;
+    const walk = (x - startX) * 2;
+    container.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleTouchEnd = () => {
+    setIsDragging(false);
   };
 
   if (recentProducts.length === 0) {
@@ -92,8 +159,15 @@ const RecentlyViewedCarousel = ({ limit = 6, showTitle = true, showControls = tr
           {/* Products Container */}
           <div
             ref={scrollContainerRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4 px-12 sm:px-0"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            className="flex gap-4 overflow-x-auto scrollbar-hide scroll-smooth pb-4 px-12 sm:px-0 select-none"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', cursor: 'grab' }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+            onMouseLeave={handleMouseLeave}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
           >
             {recentProducts.map((product) => (
               <div

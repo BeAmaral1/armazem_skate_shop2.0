@@ -7,10 +7,18 @@ import FeaturedProductsCarousel from '../components/FeaturedProductsCarousel';
 import BrandsCarousel from '../components/BrandsCarousel';
 import SEO from '../components/SEO';
 import { products, drops } from '../data/products';
+import useSwipe from '../hooks/useSwipe';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const featuredProducts = products.filter(p => p.featured).slice(0, 8);
+  
+  // Hook de swipe para o hero carousel
+  const heroSwipeRef = useSwipe(
+    () => nextSlide(), // Swipe esquerda
+    () => prevSlide(), // Swipe direita
+    50 // Threshold
+  );
 
   // Sistema de Campanhas Sazonais - Altere facilmente aqui!
   const campaigns = [
@@ -98,7 +106,7 @@ const Home = () => {
         description="A melhor loja de surf e skate do Brasil. Pranchas, shapes, acessórios e vestuário das melhores marcas. Frete grátis acima de R$299."
       />
       {/* Hero Carrossel Section */}
-      <section className="relative h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center overflow-hidden group">
+      <section ref={heroSwipeRef} className="relative h-[500px] sm:h-[600px] lg:h-[700px] flex items-center justify-center overflow-hidden group select-none">
         {/* Slides */}
         {campaigns.map((campaign, index) => (
           <div

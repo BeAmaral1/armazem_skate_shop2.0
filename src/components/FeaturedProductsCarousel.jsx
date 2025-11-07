@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from './ProductCard';
+import useSwipe from '../hooks/useSwipe';
 
 const FeaturedProductsCarousel = ({ products }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
   const [itemsPerView, setItemsPerView] = useState(4);
   const carouselRef = useRef(null);
+  
+  // Hook de swipe para arrastar com dedo/mouse
+  const swipeRef = useSwipe(
+    () => goToNext(), // Swipe esquerda
+    () => goToPrevious(), // Swipe direita
+    50 // Threshold
+  );
 
   // Detectar tamanho da tela para items por view
   useEffect(() => {
@@ -62,6 +70,8 @@ const FeaturedProductsCarousel = ({ products }) => {
     >
       {/* Container do Carrossel */}
       <div className="overflow-hidden" ref={carouselRef}>
+        {/* Área de swipe */}
+        <div ref={swipeRef} className="select-none">
         <div
           className="flex transition-transform duration-500 ease-out"
           style={{
@@ -77,6 +87,7 @@ const FeaturedProductsCarousel = ({ products }) => {
               <ProductCard product={product} />
             </div>
           ))}
+        </div>
         </div>
       </div>
 

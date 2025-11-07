@@ -10,6 +10,7 @@ import ReviewsSection from '../components/ReviewsSection';
 import Image360Viewer from '../components/Image360Viewer';
 import SEO from '../components/SEO';
 import { has360View, generate360Images } from '../utils/generate360Images';
+import useSwipe from '../hooks/useSwipe';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -25,6 +26,21 @@ const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
   const [view360, setView360] = useState(false);
+  
+  // Hook de swipe para navegar entre imagens
+  const nextImage = () => {
+    if (product && product.images) {
+      setSelectedImage((prev) => (prev + 1) % product.images.length);
+    }
+  };
+  
+  const previousImage = () => {
+    if (product && product.images) {
+      setSelectedImage((prev) => (prev - 1 + product.images.length) % product.images.length);
+    }
+  };
+  
+  const swipeRef = useSwipe(nextImage, previousImage, 50);
   
   // Verificar estoque
   const isOutOfStock = product?.stock === 0;
@@ -157,7 +173,7 @@ const ProductDetail = () => {
               <Image360Viewer images={images360} productName={product.name} />
             ) : (
               <>
-                <div className="bg-white rounded-xl overflow-hidden mb-4 aspect-square">
+                <div ref={swipeRef} className="bg-white rounded-xl overflow-hidden mb-4 aspect-square select-none">
                   <img
                     src={product.images[selectedImage]}
                     alt={product.name}

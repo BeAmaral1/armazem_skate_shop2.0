@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import WishlistButton from './WishlistButton';
 
-const ProductCard = ({ product }) => {
+const ProductCard = memo(({ product }) => {
   const discount = product.oldPrice 
     ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100)
     : 0;
@@ -109,6 +109,8 @@ const ProductCard = ({ product }) => {
       </div>
     </div>
   );
-};
+});
+
+ProductCard.displayName = 'ProductCard';
 
 export default ProductCard;
