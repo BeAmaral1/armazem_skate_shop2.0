@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './context/AuthContext';
+import { ProductProvider } from './context/ProductContext';
 import { CartProvider } from './context/CartContext';
 import { WishlistProvider } from './context/WishlistContext';
 import { OrdersProvider } from './context/OrdersContext';
@@ -10,15 +11,17 @@ import { CouponsProvider } from './context/CouponsContext';
 import { NotificationsProvider } from './context/NotificationsContext';
 import { RecentlyViewedProvider } from './context/RecentlyViewedContext';
 import { FAQProvider } from './context/FAQContext';
-import { ReferralProvider } from './context/ReferralContext';
+import { ReferralProvider } from './context/ReferralProvider';
 import PrivateRoute from './components/PrivateRoute';
 import ScrollToTop from './components/ScrollToTop';
-import Header from './components/Header';
-import Footer from './components/Footer';
 import LoadingScreen from './components/LoadingScreen';
-import ReferralBanner from './components/ReferralBanner';
-import BackToTop from './components/BackToTop';
-import WhatsAppButton from './components/WhatsAppButton';
+
+// Lazy load components pesados
+const Header = lazy(() => import('./components/Header'));
+const Footer = lazy(() => import('./components/Footer'));
+const ReferralBanner = lazy(() => import('./components/ReferralBanner'));
+const BackToTop = lazy(() => import('./components/BackToTop'));
+const WhatsAppButton = lazy(() => import('./components/WhatsAppButton'));
 
 // Lazy load pages
 const Home = lazy(() => import('./pages/Home'));
@@ -51,16 +54,17 @@ const NotFound = lazy(() => import('./pages/NotFound'));
 function App() {
   return (
     <AuthProvider>
-      <FAQProvider>
-        <RecentlyViewedProvider>
-          <NotificationsProvider>
-            <CouponsProvider>
-              <ReviewsProvider>
-                <OrdersProvider>
-                  <WishlistProvider>
-                    <ReferralProvider>
-                    <CartProvider>
-          <Router>
+      <ProductProvider>
+        <FAQProvider>
+          <RecentlyViewedProvider>
+            <NotificationsProvider>
+              <CouponsProvider>
+                <ReviewsProvider>
+                  <OrdersProvider>
+                    <WishlistProvider>
+                      <ReferralProvider>
+                        <CartProvider>
+                          <Router>
             <ScrollToTop />
             <Toaster 
               position="top-right"
@@ -85,8 +89,10 @@ function App() {
               }}
             />
             <div className="flex flex-col min-h-screen overflow-x-hidden">
-              <Header />
-              <ReferralBanner />
+              <Suspense fallback={<div className="h-20 bg-dark-900" />}>
+                <Header />
+                <ReferralBanner />
+              </Suspense>
               <main className="flex-grow overflow-x-hidden">
                 <Suspense fallback={<LoadingScreen />}>
                   <Routes>
@@ -174,22 +180,27 @@ function App() {
                   </Routes>
                 </Suspense>
               </main>
-              <Footer />
+              <Suspense fallback={<div className="h-32 bg-dark-900" />}>
+                <Footer />
+              </Suspense>
               
               {/* Botões Flutuantes */}
-              <BackToTop />
-              <WhatsAppButton />
+              <Suspense fallback={null}>
+                <BackToTop />
+                <WhatsAppButton />
+              </Suspense>
             </div>
           </Router>
-                    </CartProvider>
-                    </ReferralProvider>
-                  </WishlistProvider>
-                </OrdersProvider>
-              </ReviewsProvider>
-            </CouponsProvider>
-          </NotificationsProvider>
-        </RecentlyViewedProvider>
-      </FAQProvider>
+                        </CartProvider>
+                      </ReferralProvider>
+                    </WishlistProvider>
+                  </OrdersProvider>
+                </ReviewsProvider>
+              </CouponsProvider>
+            </NotificationsProvider>
+          </RecentlyViewedProvider>
+        </FAQProvider>
+      </ProductProvider>
     </AuthProvider>
   );
 }
