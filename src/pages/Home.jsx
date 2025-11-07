@@ -185,8 +185,8 @@ const Home = () => {
 
       {/* Featured Products */}
       <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8 sm:mb-12">
+        <div className="container mx-auto">
+          <div className="text-center mb-8 sm:mb-12 px-4">
             <h2 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 mb-4">
               Destaques da Semana
             </h2>
@@ -195,10 +195,12 @@ const Home = () => {
             </p>
           </div>
           
-          {/* Carrossel de Produtos em Destaque */}
-          <FeaturedProductsCarousel products={featuredProducts} />
+          {/* Carrossel de Produtos em Destaque - Largura total */}
+          <div className="px-4 lg:px-8">
+            <FeaturedProductsCarousel products={featuredProducts} />
+          </div>
           
-          <div className="text-center mt-10">
+          <div className="text-center mt-10 px-4">
             <Link to="/produtos" className="btn-primary inline-flex items-center gap-2">
               Ver Todos os Produtos
               <ArrowRight className="w-5 h-5" />
