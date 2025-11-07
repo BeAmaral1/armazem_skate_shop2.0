@@ -6,6 +6,7 @@ import FeaturedProductsCarousel from '../components/FeaturedProductsCarousel';
 import SEO from '../components/SEO';
 import { products, drops } from '../data/products';
 import useSwipe from '../hooks/useSwipe';
+import { optimizeHeroImage } from '../utils/imageOptimizer';
 
 // Lazy load de componentes não críticos
 const RecentlyViewedCarousel = lazy(() => import('../components/RecentlyViewedCarousel'));
@@ -123,10 +124,11 @@ const Home = () => {
             }`}
           >
             <img
-              src={campaign.image}
+              src={optimizeHeroImage(campaign.image)}
               alt={campaign.title}
               className="w-full h-full object-cover"
               loading={index === 0 ? 'eager' : 'lazy'}
+              decoding="async"
             />
             <div className="absolute inset-0 bg-gradient-to-r from-dark-900/70 to-transparent"></div>
           </div>

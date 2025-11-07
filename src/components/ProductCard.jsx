@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import WishlistButton from './WishlistButton';
 import LazyImage from './LazyImage';
+import { optimizeProductCard } from '../utils/imageOptimizer';
 
 const ProductCard = memo(({ product }) => {
   const discount = product.oldPrice 
@@ -14,7 +15,7 @@ const ProductCard = memo(({ product }) => {
       {/* Image */}
       <div className="relative overflow-hidden aspect-square">
         <LazyImage
-          src={product.image}
+          src={optimizeProductCard(product.image)}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
         />
