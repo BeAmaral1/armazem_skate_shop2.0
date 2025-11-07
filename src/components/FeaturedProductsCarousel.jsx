@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from './ProductCard';
 import useSwipe from '../hooks/useSwipe';
@@ -16,31 +16,42 @@ const FeaturedProductsCarousel = ({ products }) => {
     50 // Threshold
   );
 
-  // Detectar tamanho da tela para items por view
+  // Detectar tamanho da tela para items por view com debounce
   useEffect(() => {
+    let timeoutId;
+    
     const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setItemsPerView(2); // Mobile: 2 cards
-      } else if (window.innerWidth < 768) {
-        setItemsPerView(3); // Mobile grande: 3 cards
-      } else if (window.innerWidth < 1024) {
-        setItemsPerView(4); // Tablet: 4 cards
-      } else if (window.innerWidth < 1280) {
-        setItemsPerView(5); // Desktop médio: 5 cards
-      } else if (window.innerWidth < 1536) {
-        setItemsPerView(6); // Desktop grande: 6 cards
-      } else {
-        setItemsPerView(7); // Desktop extra grande: 7 cards
-      }
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        if (window.innerWidth < 640) {
+          setItemsPerView(2); // Mobile: 2 cards
+        } else if (window.innerWidth < 768) {
+          setItemsPerView(3); // Mobile grande: 3 cards
+        } else if (window.innerWidth < 1024) {
+          setItemsPerView(4); // Tablet: 4 cards
+        } else if (window.innerWidth < 1280) {
+          setItemsPerView(5); // Desktop médio: 5 cards
+        } else if (window.innerWidth < 1536) {
+          setItemsPerView(6); // Desktop grande: 6 cards
+        } else {
+          setItemsPerView(7); // Desktop extra grande: 7 cards
+        }
+      }, 150); // Debounce de 150ms
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', handleResize, { passive: true });
+    return () => {
+      clearTimeout(timeoutId);
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
-  // Total de slides possíveis
-  const maxIndex = Math.max(0, products.length - itemsPerView);
+  // Total de slides possíveis (memoizado)
+  const maxIndex = useMemo(() => 
+    Math.max(0, products.length - itemsPerView),
+    [products.length, itemsPerView]
+  );
 
   // Auto-play
   useEffect(() => {
@@ -53,20 +64,20 @@ const FeaturedProductsCarousel = ({ products }) => {
     return () => clearInterval(interval);
   }, [isAutoPlaying, maxIndex]);
 
-  const goToPrevious = () => {
+  const goToPrevious = useCallback(() => {
     setIsAutoPlaying(false);
     setCurrentIndex(prev => (prev <= 0 ? maxIndex : prev - 1));
-  };
+  }, [maxIndex]);
 
-  const goToNext = () => {
+  const goToNext = useCallback(() => {
     setIsAutoPlaying(false);
     setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
-  };
+  }, [maxIndex]);
 
-  const goToSlide = (index) => {
+  const goToSlide = useCallback((index) => {
     setIsAutoPlaying(false);
     setCurrentIndex(index);
-  };
+  }, []);
 
   return (
     <div 
@@ -166,4 +177,4 @@ const FeaturedProductsCarousel = ({ products }) => {
   );
 };
 
-export default FeaturedProductsCarousel;
+export default memo(FeaturedProductsCarousel);

@@ -1,17 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, lazy, Suspense } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Waves, Wind, Shirt, Package, Clock, Eye, Tag, ChevronLeft, ChevronRight } from 'lucide-react';
 import ProductCard from '../components/ProductCard';
-import RecentlyViewedCarousel from '../components/RecentlyViewedCarousel';
 import FeaturedProductsCarousel from '../components/FeaturedProductsCarousel';
-import BrandsCarousel from '../components/BrandsCarousel';
 import SEO from '../components/SEO';
 import { products, drops } from '../data/products';
 import useSwipe from '../hooks/useSwipe';
 
+// Lazy load de componentes não críticos
+const RecentlyViewedCarousel = lazy(() => import('../components/RecentlyViewedCarousel'));
+const BrandsCarousel = lazy(() => import('../components/BrandsCarousel'));
+
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const featuredProducts = products.filter(p => p.featured).slice(0, 15);
+  
+  // Memoizar produtos em destaque
+  const featuredProducts = useMemo(
+    () => products.filter(p => p.featured).slice(0, 15),
+    []
+  );
   
   // Hook de swipe para o hero carousel
   const heroSwipeRef = useSwipe(
@@ -210,7 +217,9 @@ const Home = () => {
       </section>
 
       {/* Recently Viewed Products */}
-      <RecentlyViewedCarousel limit={6} />
+      <Suspense fallback={<div className="py-16 bg-white text-center">Carregando...</div>}>
+        <RecentlyViewedCarousel limit={6} />
+      </Suspense>
 
       {/* Categories - Circular Design */}
       <section className="py-16 bg-gray-50">
@@ -297,7 +306,9 @@ const Home = () => {
       </section>
 
       {/* Carrossel de Marcas */}
-      <BrandsCarousel />
+      <Suspense fallback={<div className="py-16 bg-gray-50 text-center">Carregando marcas...</div>}>
+        <BrandsCarousel />
+      </Suspense>
 
       {/* Drops/Collections Section */}
       <section className="py-16 bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">

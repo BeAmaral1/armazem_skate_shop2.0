@@ -2,6 +2,7 @@ import React, { memo } from 'react';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Star } from 'lucide-react';
 import WishlistButton from './WishlistButton';
+import LazyImage from './LazyImage';
 
 const ProductCard = memo(({ product }) => {
   const discount = product.oldPrice 
@@ -12,12 +13,10 @@ const ProductCard = memo(({ product }) => {
     <div className="card group">
       {/* Image */}
       <div className="relative overflow-hidden aspect-square">
-        <img
+        <LazyImage
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-          loading="lazy"
-          decoding="async"
         />
         {/* Wishlist Button */}
         <div className="absolute top-2 left-2 sm:top-4 sm:left-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
