@@ -5,18 +5,18 @@ import ProductCard from './ProductCard';
 const FeaturedProductsCarousel = ({ products }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [itemsPerView, setItemsPerView] = useState(2);
+  const [itemsPerView, setItemsPerView] = useState(4);
   const carouselRef = useRef(null);
 
   // Detectar tamanho da tela para items por view
   useEffect(() => {
     const handleResize = () => {
-      if (window.innerWidth < 640) {
-        setItemsPerView(1); // Mobile: 1 card
+      if (window.innerWidth < 768) {
+        setItemsPerView(2); // Mobile: 2 cards
       } else if (window.innerWidth < 1024) {
-        setItemsPerView(2); // Tablet: 2 cards
+        setItemsPerView(3); // Tablet: 3 cards
       } else {
-        setItemsPerView(2); // Desktop: 2 cards (conforme solicitado)
+        setItemsPerView(4); // Desktop: 4 cards
       }
     };
 

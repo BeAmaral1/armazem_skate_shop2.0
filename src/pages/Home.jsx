@@ -10,7 +10,7 @@ import { products, drops } from '../data/products';
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const featuredProducts = products.filter(p => p.featured).slice(0, 3);
+  const featuredProducts = products.filter(p => p.featured).slice(0, 8);
 
   // Sistema de Campanhas Sazonais - Altere facilmente aqui!
   const campaigns = [

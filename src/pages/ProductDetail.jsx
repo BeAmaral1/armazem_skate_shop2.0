@@ -54,7 +54,7 @@ const ProductDetail = () => {
 
   const relatedProducts = products
     .filter(p => p.category === product.category && p.id !== product.id)
-    .slice(0, 2);
+    .slice(0, 4);
 
   const handleAddToCart = () => {
     if (!selectedSize && product.sizes.length > 1) {
@@ -431,7 +431,7 @@ const ProductDetail = () => {
             <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
               Produtos Relacionados
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {relatedProducts.map(product => (
                 <ProductCard key={product.id} product={product} />
               ))}
