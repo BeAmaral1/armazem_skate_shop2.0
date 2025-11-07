@@ -11,7 +11,7 @@ import { CouponsProvider } from './context/CouponsContext';
 import { NotificationsProvider } from './context/NotificationsContext';
 import { RecentlyViewedProvider } from './context/RecentlyViewedContext';
 import { FAQProvider } from './context/FAQContext';
-import { ReferralProvider } from './context/ReferralProvider';
+import { ReferralProvider } from './context/ReferralContext';
 import PrivateRoute from './components/PrivateRoute';
 import ScrollToTop from './components/ScrollToTop';
 import LoadingScreen from './components/LoadingScreen';
