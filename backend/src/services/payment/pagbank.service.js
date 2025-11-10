@@ -25,16 +25,22 @@ class PagBankService {
     try {
       logger.info('Creating card payment', { orderId: order.id });
 
+      // Obter dados do comprador (user ou guest checkout)
+      const customerName = order.user?.name || order.customerName;
+      const customerEmail = order.user?.email || order.customerEmail;
+      const customerCpf = order.user?.cpf || order.customerCpf;
+      const customerPhone = order.user?.phone || order.customerPhone;
+
       const payload = {
         reference_id: order.orderNumber,
         customer: {
-          name: order.user.name,
-          email: order.user.email,
-          tax_id: order.user.cpf?.replace(/\D/g, '') || '00000000000',
+          name: customerName,
+          email: customerEmail,
+          tax_id: customerCpf?.replace(/\D/g, '') || '00000000000',
           phones: [{
             country: '55',
-            area: order.user.phone?.substring(0, 2) || '11',
-            number: order.user.phone?.substring(2) || '999999999',
+            area: customerPhone?.substring(0, 2) || '11',
+            number: customerPhone?.substring(2) || '999999999',
             type: 'MOBILE'
           }]
         },

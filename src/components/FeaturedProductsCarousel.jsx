@@ -1,178 +1,97 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo, memo } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useState, useRef, memo } from 'react';
 import ProductCard from './ProductCard';
-import useSwipe from '../hooks/useSwipe';
 
 const FeaturedProductsCarousel = ({ products }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
-  const [itemsPerView, setItemsPerView] = useState(4);
   const carouselRef = useRef(null);
-  
-  // Hook de swipe para arrastar com dedo/mouse
-  const swipeRef = useSwipe(
-    () => goToNext(), // Swipe esquerda
-    () => goToPrevious(), // Swipe direita
-    50 // Threshold
-  );
+  const [isDragging, setIsDragging] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
 
-  // Detectar tamanho da tela para items por view com debounce
-  useEffect(() => {
-    let timeoutId;
-    
-    const handleResize = () => {
-      clearTimeout(timeoutId);
-      timeoutId = setTimeout(() => {
-        if (window.innerWidth < 640) {
-          setItemsPerView(2); // Mobile: 2 cards
-        } else if (window.innerWidth < 768) {
-          setItemsPerView(3); // Mobile grande: 3 cards
-        } else if (window.innerWidth < 1024) {
-          setItemsPerView(4); // Tablet: 4 cards
-        } else if (window.innerWidth < 1280) {
-          setItemsPerView(5); // Desktop médio: 5 cards
-        } else if (window.innerWidth < 1536) {
-          setItemsPerView(6); // Desktop grande: 6 cards
-        } else {
-          setItemsPerView(7); // Desktop extra grande: 7 cards
-        }
-      }, 150); // Debounce de 150ms
-    };
+  // Handlers para arrastar
+  const handleMouseDown = (e) => {
+    const container = carouselRef.current;
+    if (!container) return;
+    setIsDragging(true);
+    setStartX(e.pageX - container.offsetLeft);
+    setScrollLeft(container.scrollLeft);
+    container.style.cursor = 'grabbing';
+  };
 
-    handleResize();
-    window.addEventListener('resize', handleResize, { passive: true });
-    return () => {
-      clearTimeout(timeoutId);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
+  const handleMouseMove = (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const container = carouselRef.current;
+    if (!container) return;
+    const x = e.pageX - container.offsetLeft;
+    const walk = (x - startX) * 2;
+    container.scrollLeft = scrollLeft - walk;
+  };
 
-  // Total de slides possíveis (memoizado)
-  const maxIndex = useMemo(() => 
-    Math.max(0, products.length - itemsPerView),
-    [products.length, itemsPerView]
-  );
+  const handleMouseUp = () => {
+    setIsDragging(false);
+    const container = carouselRef.current;
+    if (container) container.style.cursor = 'grab';
+  };
 
-  // Auto-play
-  useEffect(() => {
-    if (!isAutoPlaying || maxIndex === 0) return;
+  const handleMouseLeave = () => {
+    if (isDragging) {
+      setIsDragging(false);
+      const container = carouselRef.current;
+      if (container) container.style.cursor = 'grab';
+    }
+  };
 
-    const interval = setInterval(() => {
-      setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
-    }, 4000); // Muda a cada 4 segundos
+  // Touch handlers
+  const handleTouchStart = (e) => {
+    const container = carouselRef.current;
+    if (!container) return;
+    setIsDragging(true);
+    setStartX(e.touches[0].pageX - container.offsetLeft);
+    setScrollLeft(container.scrollLeft);
+  };
 
-    return () => clearInterval(interval);
-  }, [isAutoPlaying, maxIndex]);
+  const handleTouchMove = (e) => {
+    if (!isDragging) return;
+    const container = carouselRef.current;
+    if (!container) return;
+    const x = e.touches[0].pageX - container.offsetLeft;
+    const walk = (x - startX) * 2;
+    container.scrollLeft = scrollLeft - walk;
+  };
 
-  const goToPrevious = useCallback(() => {
-    setIsAutoPlaying(false);
-    setCurrentIndex(prev => (prev <= 0 ? maxIndex : prev - 1));
-  }, [maxIndex]);
-
-  const goToNext = useCallback(() => {
-    setIsAutoPlaying(false);
-    setCurrentIndex(prev => (prev >= maxIndex ? 0 : prev + 1));
-  }, [maxIndex]);
-
-  const goToSlide = useCallback((index) => {
-    setIsAutoPlaying(false);
-    setCurrentIndex(index);
-  }, []);
+  const handleTouchEnd = () => {
+    setIsDragging(false);
+  };
 
   return (
-    <div 
-      className="relative"
-      onMouseEnter={() => setIsAutoPlaying(false)}
-      onMouseLeave={() => setIsAutoPlaying(true)}
-    >
-      {/* Container do Carrossel */}
-      <div className="overflow-hidden" ref={carouselRef}>
-        {/* Área de swipe */}
-        <div ref={swipeRef} className="select-none">
-        <div
-          className="flex transition-transform duration-500 ease-out"
-          style={{
-            transform: `translateX(-${currentIndex * (100 / itemsPerView)}%)`
-          }}
-        >
-          {products.map(product => (
-            <div
-              key={product.id}
-              className="flex-shrink-0 px-1 sm:px-2"
-              style={{ width: `${100 / itemsPerView}%` }}
-            >
-              <ProductCard product={product} />
-            </div>
-          ))}
-        </div>
-        </div>
+    <div className="relative">
+      {/* Container do Carrossel com scroll livre */}
+      <div 
+        ref={carouselRef}
+        className="flex gap-2 sm:gap-4 overflow-x-auto scrollbar-hide select-none pb-4"
+        style={{ 
+          scrollbarWidth: 'none', 
+          msOverflowStyle: 'none',
+          cursor: 'grab',
+          scrollBehavior: 'smooth'
+        }}
+        onMouseDown={handleMouseDown}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseLeave={handleMouseLeave}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {products.map(product => (
+          <div
+            key={product.id}
+            className="flex-shrink-0 w-[45%] sm:w-[30%] md:w-[23%] lg:w-[18%] xl:w-[15%]"
+          >
+            <ProductCard product={product} />
+          </div>
+        ))}
       </div>
-
-      {/* Botões de Navegação - Visíveis em todos os tamanhos */}
-      {products.length > itemsPerView && (
-        <>
-          <button
-            onClick={goToPrevious}
-            className="flex absolute left-0 sm:-left-4 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-50 text-dark-900 p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={currentIndex === 0}
-            aria-label="Anterior"
-          >
-            <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
-
-          <button
-            onClick={goToNext}
-            className="flex absolute right-0 sm:-right-4 top-1/2 -translate-y-1/2 z-10 bg-white hover:bg-gray-50 text-dark-900 p-2 sm:p-3 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed"
-            disabled={currentIndex === maxIndex}
-            aria-label="Próximo"
-          >
-            <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
-        </>
-      )}
-
-      {/* Indicadores de Slide - Mobile/Tablet */}
-      {products.length > itemsPerView && (
-        <div className="flex justify-center gap-2 mt-6 md:hidden">
-          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`h-2 rounded-full transition-all duration-300 ${
-                index === currentIndex
-                  ? 'w-8 bg-dark-900'
-                  : 'w-2 bg-gray-300 hover:bg-gray-400'
-              }`}
-              aria-label={`Ir para slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Indicadores de Slide - Desktop */}
-      {products.length > itemsPerView && (
-        <div className="hidden md:flex justify-center gap-2 mt-8">
-          {Array.from({ length: maxIndex + 1 }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`h-2.5 rounded-full transition-all duration-300 ${
-                index === currentIndex
-                  ? 'w-10 bg-dark-900'
-                  : 'w-2.5 bg-gray-300 hover:bg-gray-400'
-              }`}
-              aria-label={`Ir para slide ${index + 1}`}
-            />
-          ))}
-        </div>
-      )}
-
-      {/* Contador - Desktop */}
-      {products.length > itemsPerView && (
-        <div className="hidden lg:flex absolute top-0 right-0 bg-dark-900 text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg">
-          {currentIndex + 1} / {maxIndex + 1}
-        </div>
-      )}
     </div>
   );
 };

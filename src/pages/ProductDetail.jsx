@@ -347,7 +347,7 @@ const ProductDetail = () => {
                     <span className="font-semibold">Últimas Unidades!</span>
                   </div>
                   <p className="text-sm text-orange-600 mt-1">
-                    Apenas {product.stock} {product.stock === 1 ? 'unidade disponível' : 'unidades disponíveis'} em estoque.
+                    {product.stock} {product.stock === 1 ? 'unidade disponível' : 'unidades disponíveis'} em estoque.
                   </p>
                 </div>
               )}

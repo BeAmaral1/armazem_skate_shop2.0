@@ -24,17 +24,22 @@ class MercadoPagoService {
     try {
       logger.info('Creating PIX payment', { orderId: order.id });
 
+      // Obter dados do comprador (user ou guest checkout)
+      const customerName = order.user?.name || order.customerName;
+      const customerEmail = order.user?.email || order.customerEmail;
+      const customerCpf = order.user?.cpf || order.customerCpf;
+
       const payment = {
         transaction_amount: order.total,
         description: `Pedido #${order.orderNumber} - Armazém Skate Shop`,
         payment_method_id: 'pix',
         payer: {
-          email: order.user.email,
-          first_name: order.user.name.split(' ')[0],
-          last_name: order.user.name.split(' ').slice(1).join(' ') || 'Sobrenome',
+          email: customerEmail,
+          first_name: customerName.split(' ')[0],
+          last_name: customerName.split(' ').slice(1).join(' ') || 'Sobrenome',
           identification: {
             type: 'CPF',
-            number: order.user.cpf?.replace(/\D/g, '') || '00000000000'
+            number: customerCpf?.replace(/\D/g, '') || '00000000000'
           }
         },
         notification_url: `${process.env.BACKEND_URL}/api/payment/webhook/mercadopago`,
@@ -88,17 +93,22 @@ class MercadoPagoService {
     try {
       logger.info('Creating Boleto payment', { orderId: order.id });
 
+      // Obter dados do comprador (user ou guest checkout)
+      const customerName = order.user?.name || order.customerName;
+      const customerEmail = order.user?.email || order.customerEmail;
+      const customerCpf = order.user?.cpf || order.customerCpf;
+
       const payment = {
         transaction_amount: order.total,
         description: `Pedido #${order.orderNumber} - Armazém Skate Shop`,
         payment_method_id: 'bolbradesco',
         payer: {
-          email: order.user.email,
-          first_name: order.user.name.split(' ')[0],
-          last_name: order.user.name.split(' ').slice(1).join(' ') || 'Sobrenome',
+          email: customerEmail,
+          first_name: customerName.split(' ')[0],
+          last_name: customerName.split(' ').slice(1).join(' ') || 'Sobrenome',
           identification: {
             type: 'CPF',
-            number: order.user.cpf?.replace(/\D/g, '') || '00000000000'
+            number: customerCpf?.replace(/\D/g, '') || '00000000000'
           },
           address: {
             zip_code: order.shippingAddress.zipCode.replace(/\D/g, ''),

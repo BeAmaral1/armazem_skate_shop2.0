@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 import logger from './utils/logger.js';
 import paymentRoutes from './routes/payment.routes.js';
 import productRoutes from './routes/product.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import adminRoutes from './routes/admin.routes.js';
+import orderRoutes from './routes/order.routes.js';
 import { prisma } from './config/database.js';
 
 // Carregar variáveis de ambiente
@@ -45,6 +48,15 @@ app.get('/health', (req, res) => {
     database: 'connected'
   });
 });
+
+// Auth routes
+app.use('/api/auth', authRoutes);
+
+// Admin routes
+app.use('/api/admin', adminRoutes);
+
+// Order routes
+app.use('/api/orders', orderRoutes);
 
 // Payment routes
 app.use('/api/payment', paymentRoutes);

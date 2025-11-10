@@ -9,8 +9,10 @@ import useSwipe from '../hooks/useSwipe';
 import { optimizeHeroImage } from '../utils/imageOptimizer';
 
 // Lazy load de componentes não críticos
-const RecentlyViewedCarousel = lazy(() => import('../components/RecentlyViewedCarousel'));
 const BrandsCarousel = lazy(() => import('../components/BrandsCarousel'));
+const CategoryCarousel = lazy(() => import('../components/CategoryCarousel'));
+const InfoBanner = lazy(() => import('../components/InfoBanner'));
+const NewsBanner = lazy(() => import('../components/NewsBanner'));
 
 const Home = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -192,15 +194,30 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Info Banner */}
+      <Suspense fallback={<div className="py-12 bg-white text-center">Carregando...</div>}>
+        <InfoBanner />
+      </Suspense>
+
+      {/* Categories Carousel */}
+      <Suspense fallback={<div className="py-8 bg-white text-center">Carregando categorias...</div>}>
+        <CategoryCarousel />
+      </Suspense>
+
+      {/* News Banner */}
+      <Suspense fallback={<div className="py-8 bg-white text-center">Carregando...</div>}>
+        <NewsBanner />
+      </Suspense>
+
       {/* Featured Products */}
-      <section className="py-16 bg-gray-50">
+      <section className="pt-6 pb-8 bg-white">
         <div className="container mx-auto">
-          <div className="text-center mb-8 sm:mb-12 px-4">
+          <div className="text-center mb-4 sm:mb-6 px-4">
             <h2 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 mb-4">
-              Destaques da Semana
+              Promoções
             </h2>
             <p className="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-              Confira nossa seleção especial de produtos em destaque
+              Aproveite as melhores ofertas e descontos especiais
             </p>
           </div>
           
@@ -214,95 +231,6 @@ const Home = () => {
               Ver Todos os Produtos
               <ArrowRight className="w-5 h-5" />
             </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Recently Viewed Products */}
-      <Suspense fallback={<div className="py-16 bg-white text-center">Carregando...</div>}>
-        <RecentlyViewedCarousel limit={6} />
-      </Suspense>
-
-      {/* Categories - Circular Design */}
-      <section className="py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8 sm:mb-12">
-            <h2 className="text-3xl sm:text-4xl font-heading font-bold text-gray-900 mb-2">
-              Explore por Categoria
-            </h2>
-            <p className="text-gray-600">Encontre exatamente o que você precisa</p>
-          </div>
-          <div className="flex flex-wrap justify-center gap-8 sm:gap-12">
-            {[
-              {
-                name: 'Surf',
-                icon: Waves,
-                image: 'https://images.unsplash.com/photo-1502680390469-be75c86b636f?w=400&q=80',
-                gradient: 'from-blue-400 to-cyan-500'
-              },
-              {
-                name: 'Skate',
-                icon: Wind,
-                image: 'https://images.unsplash.com/photo-1547447134-cd3f5c716030?w=400&q=80',
-                gradient: 'from-orange-400 to-red-500'
-              },
-              {
-                name: 'Vestuário',
-                icon: Shirt,
-                image: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&q=80',
-                gradient: 'from-purple-400 to-pink-500'
-              },
-              {
-                name: 'Acessórios',
-                icon: Package,
-                image: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=400&q=80',
-                gradient: 'from-green-400 to-emerald-500'
-              },
-              {
-                name: 'Pranchas',
-                icon: Waves,
-                image: 'https://images.unsplash.com/photo-1502933691298-84fc14542831?w=400&q=80',
-                gradient: 'from-indigo-400 to-blue-500'
-              },
-              {
-                name: 'Shapes',
-                icon: Wind,
-                image: 'https://images.unsplash.com/photo-1564982752979-3f7bc974c9a5?w=400&q=80',
-                gradient: 'from-yellow-400 to-orange-500'
-              }
-            ].map(category => (
-              <Link
-                key={category.name}
-                to={`/produtos?categoria=${category.name}`}
-                className="group flex flex-col items-center"
-              >
-                {/* Círculo com imagem */}
-                <div className="relative w-24 h-24 sm:w-32 sm:h-32 mb-3 sm:mb-4">
-                  {/* Anel gradiente externo */}
-                  <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${category.gradient} p-1 group-hover:scale-110 transition-transform duration-300`}>
-                    {/* Círculo interno branco */}
-                    <div className="w-full h-full rounded-full bg-white p-1">
-                      {/* Imagem circular */}
-                      <div className="w-full h-full rounded-full overflow-hidden">
-                        <img
-                          src={category.image}
-                          alt={category.name}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  
-                  {/* Efeito de brilho ao hover */}
-                  <div className={`absolute inset-0 rounded-full bg-gradient-to-br ${category.gradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-300`}></div>
-                </div>
-                
-                {/* Nome da categoria */}
-                <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-dark-600 transition-colors">
-                  {category.name}
-                </h3>
-              </Link>
-            ))}
           </div>
         </div>
       </section>

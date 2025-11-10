@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { ShoppingCart, Search, User, Menu, X, Waves, Heart, LogOut, ChevronDown, Package } from 'lucide-react';
+import { ShoppingCart, Search, User, Menu, X, Waves, Heart, LogOut, ChevronDown, Package, Eye } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
 import { useAuth } from '../context/AuthContext';
@@ -134,32 +134,32 @@ const Header = () => {
       </div>
 
       {/* Main header */}
-      <div className="container mx-auto px-4 py-4">
+      <div className="container mx-auto px-3 md:px-4 lg:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+          <Link to="/" className="flex items-center gap-2 md:gap-3 group">
             <img 
               src="/logo_armazem.png" 
               alt="Armazem Skate Shop" 
-              className="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 object-contain flex-shrink-0 group-hover:scale-105 transition-transform duration-300"
+              className="w-10 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 object-contain flex-shrink-0 group-hover:scale-105 transition-transform duration-300"
             />
             <div className="flex flex-col justify-center">
-              <h1 className="text-lg sm:text-xl md:text-2xl font-logo font-bold text-dark-900 uppercase tracking-wide leading-none">
+              <h1 className="text-base md:text-xl lg:text-2xl font-logo font-bold text-dark-900 uppercase tracking-wide leading-none">
                 Armazém
               </h1>
-              <p className="text-xs sm:text-sm text-dark-600 font-semibold tracking-wider leading-none mt-0.5">
+              <p className="text-[10px] md:text-xs lg:text-sm text-dark-600 font-semibold tracking-wider leading-none mt-0.5">
                 SKATE SHOP
               </p>
             </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-4 lg:space-x-8">
             {navLinks.map(link => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`font-medium transition-colors ${
+                className={`font-medium text-sm lg:text-base transition-colors ${
                   isActive(link.path)
                     ? 'text-dark-900 border-b-2 border-dark-900'
                     : 'text-gray-700 hover:text-dark-900'
@@ -174,7 +174,7 @@ const Header = () => {
               <button
                 ref={categoriesButtonRef}
                 onClick={() => setIsCategoriesOpen(!isCategoriesOpen)}
-                className="flex items-center gap-1 font-medium text-gray-700 hover:text-dark-900 transition-colors"
+                className="flex items-center gap-1 font-medium text-sm lg:text-base text-gray-700 hover:text-dark-900 transition-colors"
               >
                 Categorias
                 <ChevronDown className={`w-4 h-4 transition-transform ${
@@ -277,40 +277,47 @@ const Header = () => {
           )}
 
           {/* Right Icons */}
-          <div className="flex items-center space-x-2 sm:space-x-4">
+          <div className="flex items-center space-x-1 sm:space-x-2 lg:space-x-4">
             {/* Search */}
             <div className="relative hidden sm:block">
               {isSearchOpen ? (
-                <form onSubmit={handleSearch} className="flex items-center">
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Buscar produtos..."
-                    className="w-48 lg:w-64 px-4 py-2 pr-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-dark-600 text-sm"
-                    autoFocus
-                  />
-                  <button
-                    type="submit"
-                    className="absolute right-2 p-1 hover:bg-gray-100 rounded-full transition-colors"
-                  >
-                    <Search className="w-5 h-5 text-dark-900" />
-                  </button>
-                </form>
+                <div className="flex items-center">
+                  <form onSubmit={handleSearch} className="flex items-center">
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      placeholder="Buscar..."
+                      className="w-32 md:w-40 lg:w-64 px-3 md:px-4 py-1.5 md:py-2 pr-8 md:pr-10 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-dark-600 text-xs md:text-sm"
+                      autoFocus
+                      onBlur={() => {
+                        if (!searchTerm) {
+                          setTimeout(() => setIsSearchOpen(false), 200);
+                        }
+                      }}
+                    />
+                    <button
+                      type="submit"
+                      className="absolute right-1 md:right-2 p-1 hover:bg-gray-100 rounded-full transition-colors"
+                    >
+                      <Search className="w-4 h-4 md:w-5 md:h-5 text-dark-900" />
+                    </button>
+                  </form>
+                </div>
               ) : (
                 <button
                   onClick={() => setIsSearchOpen(true)}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  className="p-1.5 md:p-2 hover:bg-gray-100 rounded-full transition-colors"
                   title="Buscar"
                 >
-                  <Search className="w-5 h-5 text-gray-700" />
+                  <Search className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
                 </button>
               )}
             </div>
 
             {/* Wishlist */}
-            <Link to="/favoritos" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors" title="Favoritos">
-              <Heart className="w-5 h-5 text-gray-700" />
+            <Link to="/favoritos" className="relative p-1.5 md:p-2 hover:bg-gray-100 rounded-full transition-colors" title="Favoritos">
+              <Heart className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
               {wishlistCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-dark-900 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {wishlistCount}
@@ -327,18 +334,18 @@ const Header = () => {
                 <button
                   ref={userButtonRef}
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                  className="flex items-center gap-1 md:gap-2 p-1.5 md:p-2 hover:bg-gray-100 rounded-lg transition-colors"
                   id="user-menu-button"
                 >
-                  <div className="w-8 h-8 bg-dark-900 rounded-full flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">
+                  <div className="w-7 h-7 md:w-8 md:h-8 bg-dark-900 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-xs md:text-sm">
                       {user?.name?.charAt(0).toUpperCase()}
                     </span>
                   </div>
-                  <span className="hidden md:block text-sm font-medium text-gray-700">
+                  <span className="hidden lg:block text-sm font-medium text-gray-700">
                     {user?.name?.split(' ')[0]}
                   </span>
-                  <ChevronDown className="hidden md:block w-4 h-4 text-gray-500" />
+                  <ChevronDown className="hidden lg:block w-4 h-4 text-gray-500" />
                 </button>
 
                 {/* Dropdown Menu */}
@@ -357,46 +364,54 @@ const Header = () => {
                     <Link
                       to="/perfil"
                       onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
-                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-3 px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 transition-colors"
                     >
-                      <User className="w-4 h-4" />
+                      <User className="w-5 h-5" />
                       Minha Conta
                     </Link>
                     <Link
                       to="/pedidos"
                       onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
-                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-3 px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 transition-colors"
                     >
-                      <Package className="w-4 h-4" />
+                      <Package className="w-5 h-5" />
                       Meus Pedidos
                     </Link>
                     <Link
                       to="/favoritos"
                       onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
-                      className="flex items-center gap-3 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                      className="flex items-center gap-3 px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 transition-colors"
                     >
-                      <Heart className="w-4 h-4" />
+                      <Heart className="w-5 h-5" />
                       Meus Favoritos
+                    </Link>
+                    <Link
+                      to="/perfil/vistos-recentemente"
+                      onClick={() => setTimeout(() => setIsUserMenuOpen(false), 100)}
+                      className="flex items-center gap-3 px-4 py-2 text-xs text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      <Eye className="w-5 h-5" />
+                      Vistos Recentemente
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
+                      className="w-full flex items-center gap-3 px-4 py-2 text-xs text-red-600 hover:bg-red-50 transition-colors"
                     >
-                      <LogOut className="w-4 h-4" />
+                      <LogOut className="w-5 h-5" />
                       Sair
                     </button>
                   </div>
                 )}
               </div>
             ) : (
-              <Link to="/login" className="p-2 hover:bg-gray-100 rounded-full transition-colors" title="Entrar">
-                <User className="w-5 h-5 text-gray-700" />
+              <Link to="/login" className="p-1.5 md:p-2 hover:bg-gray-100 rounded-full transition-colors" title="Entrar">
+                <User className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
               </Link>
             )}
 
             {/* Cart */}
-            <Link to="/carrinho" className="relative p-2 hover:bg-gray-100 rounded-full transition-colors" title="Carrinho">
-              <ShoppingCart className="w-5 h-5 text-gray-700" />
+            <Link to="/carrinho" className="relative p-1.5 md:p-2 hover:bg-gray-100 rounded-full transition-colors" title="Carrinho">
+              <ShoppingCart className="w-4 h-4 md:w-5 md:h-5 text-gray-700" />
               {cartCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-dark-900 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
                   {cartCount}
